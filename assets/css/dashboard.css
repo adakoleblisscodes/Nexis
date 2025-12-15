@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+}
+
+/* SIDEBAR */
+#sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: #111827;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Scrollbar */
+#sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Header */
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+}
+
+.logo-circle {
+    width: 45px;
+    height: 45px;
+    background: #2563eb;
+    border-radius: 50%;
+    line-height: 45px;
+    font-weight: bold;
+    margin: auto;
+}
+
+/* Nav */
+.sidebar-nav {
+    flex: 1;
+    padding: 10px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 15px;
+    color: #cbd5e1;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-bottom: 6px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: #1e293b;
+    color: #fff;
+}
+
+/* Logout */
+.nav-link.logout {
+    color: #f87171;
+}
+
+/* Footer */
+.sidebar-footer {
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+/* CONTENT */
+#content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+/* Cards */
+.stats-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexis Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<style>
+    /* Dashboard CSS Stylesheet */
+    :root {
+        --navy-blue: #0a1a3a;
+        --navy-blue-light: #1a2a4a;
+        --navy-blue-lighter: #2a3a5a;
+        --gold-primary: #d4af37;
+        --gold-secondary: #f4d03f;
+        --gold-light: #f7ef8a;
+        --sidebar-width: 260px;
+    }
+
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow-x: hidden;
+    }
+
+    /* Sidebar Styles */
+    #sidebar {
+        width: var(--sidebar-width);
+        background: linear-gradient(180deg, var(--navy-blue) 0%, var(--navy-blue-light) 100%);
+        color: white;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 3px 0 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-header {
+        padding: 20px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo-circle {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+    }
+
+    .logo-text {
+        color: var(--navy-blue);
+        font-size: 24px;
+        font-weight: 900;
+    }
+
+    .platform-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+    }
+
+    /* Navigation */
+    .sidebar-nav {
+        padding: 20px 0;
+    }
+
+    .nav-item {
+        margin-bottom: 5px;
+    }
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background: rgba(212, 175, 55, 0.15);
+        color: white;
+        border-left: 3px solid var(--gold-primary);
+    }
+
+    .nav-link i {
+        width: 20px;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    /* Main Content */
+    #content {
+        margin-left: var(--sidebar-width);
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
+
+    /* Header */
+    .top-header {
+        background: white;
+        padding: 15px 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .page-title h1 {
+        color: var(--navy-blue);
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, var(--navy-blue), var(--navy-blue-light));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .sidebar-header {
+        padding: 20px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        flex-shrink: 0;
+    }
+
+    .sidebar-nav {
+        padding: 20px 0;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .badge-admin {
+        background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+        color: var(--navy-blue);
+        font-weight: 700;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+
+    /* Stats Cards */
+    .stats-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        margin-bottom: 25px;
+        border-top: 4px solid var(--gold-primary);
+        transition: transform 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stats-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(212, 175, 55, 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .stats-icon i {
+        color: var(--gold-primary);
+        font-size: 24px;
+    }
+
+    .stats-number {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--navy-blue);
+        margin-bottom: 5px;
+    }
+
+    .stats-label {
+        color: #666;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* Notice Board */
+    .section-title {
+        color: var(--navy-blue);
+        font-weight: 700;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid var(--gold-primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        color: var(--gold-primary);
+    }
+
+    .notice-board {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid var(--gold-primary);
+        margin-bottom: 30px;
+    }
+
+    .notice-item {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+    }
+
+    .notice-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--gold-primary);
+    }
+
+    .notice-category {
+        display: inline-block;
+        background: rgba(212, 175, 55, 0.1);
+        color: var(--navy-blue);
+        font-weight: 600;
+        padding: 5px 15px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .notice-title {
+        font-weight: 600;
+        color: var(--navy-blue);
+        margin-bottom: 5px;
+        font-size: 18px;
+    }
+
+    .notice-desc {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .btn-enter {
+        background: linear-gradient(135deg, var(--navy-blue) 0%, var(--navy-blue-light) 100%);
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-enter:hover {
+        background: linear-gradient(135deg, var(--navy-blue-light) 0%, var(--navy-blue) 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(10, 26, 58, 0.2);
+    }
+
+    /* Admin Features */
+    .feature-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        height: 100%;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(to bottom, var(--gold-primary), var(--gold-secondary));
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(212, 175, 55, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .feature-icon i {
+        color: var(--gold-primary);
+        font-size: 28px;
+    }
+
+    .feature-title {
+        font-weight: 700;
+        color: var(--navy-blue);
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .feature-desc {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* Recent Activity */
+    .activity-list {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .activity-item {
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+
+    .activity-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(212, 175, 55, 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .activity-icon i {
+        color: var(--gold-primary);
+    }
+
+    .activity-content {
+        flex: 1;
+    }
+
+    .activity-text {
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .activity-time {
+        font-size: 12px;
+        color: #888;
+    }
+
+    /* Toggle Button for Mobile */
+    #sidebarCollapse {
+        display: none;
+        background: var(--navy-blue);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        margin-bottom: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        #sidebar {
+            margin-left: -260px;
+        }
+
+        #sidebar.active {
+            margin-left: 0;
+        }
+
+        #content {
+            margin-left: 0;
+        }
+
+        #sidebarCollapse {
+            display: block;
+        }
+    }
+</style>
+
+<body>
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <img src="assets/images/Nexis logo.png" alt="logo" height="90px">
+                <h1 class="platform-name">Nexis</h1>
+            </div>
+        </div> <!-- Fixed: removed extra closing div -->
+
+        <div class="sidebar-nav">
+            <ul class="list-unstyled">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Staff Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Teacher Assignment</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-school"></i>
+                        <span>Class Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Student Enrollment</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-poll"></i>
+                        <span>Results & Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-coins"></i>
+                        <span>Fee Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>System Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <!-- Logout button - added nav-item class -->
+                <li class="nav-item mt-4">
+                    <a href="logout.php" class="nav-link logout">
+                        <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Updated footer positioning -->
+        <div class="sidebar-footer p-3">
+            <div class="text-center">
+                <small class="text-muted">Admin Panel</small>
+                <div class="mt-2">
+                    <span class="badge-admin">SYSTEM ADMIN</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="content">
+        <!-- Top Header -->
+
+        <button type="button" id="sidebarCollapse" class="btn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="top-header">
+            <div class="page-title">
+                <h1>Dashboard</h1>
+                <p class="text-muted mb-0">Welcome back, System Administrator</p>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">SA</div>
+                <div>
+                    <p class="mb-1 fw-bold">System Admin</p>
+                    <p class="mb-0 text-muted small">Last login: Today, 09:15 AM</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stats-number">1,254</div>
+                    <div class="stats-label">Total Students</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stats-number">84</div>
+                    <div class="stats-label">Teaching Staff</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="stats-number">42</div>
+                    <div class="stats-label">Active Classes</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-money-check-alt"></i>
+                    </div>
+                    <div class="stats-number">₵ 284,560</div>
+                    <div class="stats-label">Fees Collected</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-8">
+                <!-- Notice Board -->
+                <h3 class="section-title">
+                    <i class="fas fa-bullhorn"></i> Notice Board
+                </h3>
+
+                <div class="notice-board">
+                    <!-- Notice Item 1 -->
+                    <div class="notice-item">
+                        <span class="notice-category">Academic</span>
+                        <h4 class="notice-title">Results Management</h4>
+                        <p class="notice-desc">View, enter, and edit student results across all classes and subjects</p>
+                        <button class="btn-enter">
+                            <i class="fas fa-chart-bar"></i> Enter Results Panel
+                        </button>
+                    </div>
+
+                    <!-- Notice Item 2 -->
+                    <div class="notice-item">
+                        <span class="notice-category">Assessment</span>
+                        <h4 class="notice-title">Computer Based Test (CBT)</h4>
+                        <p class="notice-desc">Create, manage, and monitor computer-based assessments for students</p>
+                        <button class="btn-enter">
+                            <i class="fas fa-laptop-code"></i> Configure CBT
+                        </button>
+                    </div>
+
+                    <!-- Notice Item 3 -->
+                    <div class="notice-item">
+                        <span class="notice-category">Learning</span>
+                        <h4 class="notice-title">E-Learning Hub</h4>
+                        <p class="notice-desc">Access and manage the comprehensive e-learning platform resources</p>
+                        <button class="btn-enter">
+                            <i class="fas fa-graduation-cap"></i> Manage Hub
+                        </button>
+                    </div>
+
+                    <!-- Notice Item 4 -->
+                    <div class="notice-item">
+                        <span class="notice-category">Financial</span>
+                        <h4 class="notice-title">Fees Management</h4>
+                        <p class="notice-desc">View fee payments, receipts, and manage financial transactions</p>
+                        <button class="btn-enter">
+                            <i class="fas fa-money-check-alt"></i> View Finance
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Admin Features -->
+                <h3 class="section-title">
+                    <i class="fas fa-cogs"></i> Admin Control Panel
+                </h3>
+
+                <div class="row">
+                    <!-- Feature 1 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <h5 class="feature-title">Staff Management</h5>
+                            <p class="feature-desc">Add, remove, and manage teaching and administrative staff members
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <h5 class="feature-title">Teacher Assignment</h5>
+                            <p class="feature-desc">Assign teachers to classes, subjects, and specific roles within the
+                                school</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-school"></i>
+                            </div>
+                            <h5 class="feature-title">Class Management</h5>
+                            <p class="feature-desc">Create classes and arms with custom naming conventions and
+                                configurations</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <h5 class="feature-title">Student Enrollment</h5>
+                            <p class="feature-desc">Add students to classes, manage enrollments, and track student
+                                movements</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-4">
+                <!-- Recent Activity -->
+                <h3 class="section-title">
+                    <i class="fas fa-history"></i> Recent Activity
+                </h3>
+
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-text">Results uploaded for JHS 2A</p>
+                            <small class="activity-time">Today, 10:30 AM</small>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-text">New teacher added: Mr. James Wilson</p>
+                            <small class="activity-time">Yesterday, 3:15 PM</small>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-text">Fee structure updated for 2024 academic year</p>
+                            <small class="activity-time">Mar 12, 2:45 PM</small>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-text">Performance analytics generated for Term 1</p>
+                            <small class="activity-time">Mar 11, 11:20 AM</small>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-text">Financial report exported for management</p>
+                            <small class="activity-time">Mar 10, 4:30 PM</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <h3 class="section-title mt-4">
+                    <i class="fas fa-chart-pie"></i> Quick Stats
+                </h3>
+
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-text">Fee Collection Rate</p>
+                            <small class="activity-time">Current: 78% | Target: 85%</small>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-text">Staff Attendance Today</p>
+                            <small class="activity-time">Present: 92% | Absent: 8%</small>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-text">Student Performance</p>
+                            <small class="activity-time">Average Score: 72.5%</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Sidebar toggle for mobile
+        document.getElementById('sidebarCollapse').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+
+
+        // Feature cards click
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('click', function () {
+                const feature = this.querySelector('.feature-title').textContent;
+                alert(`Opening ${feature} panel`);
+            });
+        });
+
+        // Auto-close sidebar on mobile when clicking outside
+        document.addEventListener('click', function (event) {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarCollapse = document.getElementById('sidebarCollapse');
+
+            if (window.innerWidth < 992 &&
+                !sidebar.contains(event.target) &&
+                !sidebarCollapse.contains(event.target) &&
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
