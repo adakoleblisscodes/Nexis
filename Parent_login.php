@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexis - Portal</title>
+    <title>Nexis - Parent Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
     <style>
@@ -37,14 +37,14 @@
             display: flex;
             width: 100%;
             max-width: 1100px;
-            height: 600px; /* Slightly taller */
+            height: 600px;
             background: white;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
         }
         
-        /* Left Panel - Slightly bigger */
+        /* Left Panel - Parent Focused */
         .brand-panel {
             flex: 1;
             background: linear-gradient(145deg, var(--navy-blue) 0%, #152a57 100%);
@@ -125,8 +125,8 @@
             line-height: 1.4;
         }
         
-        /* Quick benefits */
-        .quick-benefits {
+        /* Parent benefits */
+        .parent-benefits {
             margin-top: 15px;
         }
         
@@ -145,7 +145,7 @@
             min-width: 20px;
         }
         
-        /* Right Panel - Slightly bigger */
+        /* Right Panel - Parent Login */
         .login-panel {
             flex: 1;
             padding: 35px 30px;
@@ -155,51 +155,27 @@
         }
         
         .login-header {
-            margin-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
         }
         
         .login-title {
-            font-size: 20px;
+            font-size: 26px;
             font-weight: 700;
             color: var(--navy-blue);
             margin-bottom: 8px;
         }
         
         .login-subtitle {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .user-id-section {
-            margin-bottom: 25px;
-        }
-        
-        .section-label {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--navy-blue);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .role-select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid #ddd;
-            border-radius: 8px;
             font-size: 15px;
-            color: var(--navy-blue);
-            background-color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            color: #666;
+            margin-bottom: 5px;
         }
         
-        .role-select:focus {
-            outline: none;
-            border-color: var(--navy-blue);
-            box-shadow: 0 0 0 3px rgba(10, 26, 58, 0.1);
+        .parent-id-note {
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
         }
         
         .form-group {
@@ -304,8 +280,8 @@
             box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
         }
         
-        /* Features grid */
-        .platform-features {
+        /* Parent portal features */
+        .portal-features {
             margin-top: 30px;
             padding-top: 25px;
             border-top: 1px solid #eee;
@@ -316,6 +292,7 @@
             font-weight: 600;
             color: var(--navy-blue);
             margin-bottom: 15px;
+            text-align: center;
         }
         
         .features-grid {
@@ -335,6 +312,23 @@
         .feature-item i {
             color: var(--gold-primary);
             font-size: 14px;
+        }
+        
+        /* Child selection option */
+        .child-selection {
+            margin-top: 15px;
+            display: none; /* Hidden by default, shown after login */
+        }
+        
+        .child-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--navy-blue);
+            background-color: white;
+            cursor: pointer;
         }
         
         /* Responsive */
@@ -358,7 +352,7 @@
 
 <body>
     <div class="container">
-        <!-- Left Panel -->
+        <!-- Left Panel - Parent Focused -->
         <div class="brand-panel">
             <div class="brand-header">
                 <div class="logo-container">
@@ -368,65 +362,53 @@
             </div>
 
             <div class="welcome-content">
-                <h2 class="welcome-title">Welcome to Admin Portal</h2>
+                <h2 class="welcome-title">Parent Engagement Portal</h2>
                 <p class="welcome-text">
-                    Access the comprehensive school management system. Manage student records, academic results, communication, and administrative operations securely.
+                    Stay connected with your child's education journey. Monitor academic progress, 
+                    communicate with teachers, and stay informed about school activities and events.
                 </p>
 
                 <div class="highlight-box">
-                    <div class="highlight-title">Unified Platform</div>
-                    <p>Integrated solution for academic management, communication, and administrative tasks in one secure environment.</p>
+                    <div class="highlight-title">Your Child's Progress at Your Fingertips</div>
+                    <p>Real-time access to academic performance, attendance records, and school communications.</p>
                 </div>
                 
-                <div class="quick-benefits">
+                <div class="parent-benefits">
                     <div class="benefit-item">
                         <i class="fas fa-chart-line benefit-icon"></i>
-                        <span>Comprehensive Analytics & Reporting</span>
+                        <span>Track Academic Performance & Grades</span>
                     </div>
                     <div class="benefit-item">
-                        <i class="fas fa-shield-alt benefit-icon"></i>
-                        <span>Enterprise-grade Security & Encryption</span>
+                        <i class="fas fa-calendar-check benefit-icon"></i>
+                        <span>Monitor Attendance & School Events</span>
                     </div>
                     <div class="benefit-item">
-                        <i class="fas fa-sync-alt benefit-icon"></i>
-                        <span>Automated Workflows & Processes</span>
+                        <i class="fas fa-comments benefit-icon"></i>
+                        <span>Direct Communication with Teachers</span>
                     </div>
                     <div class="benefit-item">
-                        <i class="fas fa-users benefit-icon"></i>
-                        <span>Integrated Communication Tools</span>
+                        <i class="fas fa-file-invoice-dollar benefit-icon"></i>
+                        <span>View Fee Statements & Payments</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Right Panel -->
+        <!-- Right Panel - Parent Login -->
         <div class="login-panel">
             <div class="login-header">
-                <h3 class="login-title">Secure Access Portal</h3>
-                <p class="login-subtitle">Enter your credentials to access the platform</p>
-            </div>
-
-            <div class="user-id-section">
-                <div class="section-label">
-                    <i class="fas fa-user-tag"></i>
-                    <span>User Role Selection</span>
-                </div>
-                <select class="role-select" id="userId">
-                    <option value="" disabled selected>Select your role</option>
-                    <option value="admin">Administrator</option>
-                    <option value="head">Head of School</option>
-                    <option value="teacher">Subject Teacher</option>
-                    <option value="classteacher">Class Teacher</option>
-                </select>
+                <h2 class="login-title">Parent Portal Login</h2>
+                <p class="login-subtitle">Access your child's academic information</p>
+                <p class="parent-id-note">Use your registered parent email or phone number</p>
             </div>
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label" for="username">
-                        <i class="fas fa-user-circle"></i> Username or Email
+                    <label class="form-label" for="parentId">
+                        <i class="fas fa-user-parent"></i> Parent Email / Phone
                     </label>
-                    <input type="text" id="username" class="form-input" placeholder="Enter username or email address"
-                        required>
+                    <input type="text" id="parentId" class="form-input" 
+                           placeholder="Enter your registered email or phone" required>
                 </div>
 
                 <div class="form-group">
@@ -434,8 +416,8 @@
                         <i class="fas fa-key"></i> Password
                     </label>
                     <div class="password-container">
-                        <input type="password" id="password" class="form-input" placeholder="Enter your password"
-                            required>
+                        <input type="password" id="password" class="form-input" 
+                               placeholder="Enter your password" required>
                         <button type="button" class="password-toggle" id="togglePassword">
                             <i class="far fa-eye"></i>
                         </button>
@@ -445,42 +427,132 @@
                 <div class="form-options">
                     <div class="remember-me">
                         <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">Keep me logged in</label>
+                        <label for="rememberMe">Remember my login</label>
                     </div>
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
 
                 <button type="submit" class="login-button">
-                    <span>Access Platform</span>
-                    <i class="fas fa-arrow-right"></i>
+                    <span>Access Parent Portal</span>
+                    <i class="fas fa-home"></i>
                 </button>
             </form>
 
-            <div class="platform-features">
-                <h3 class="features-title">Platform Features</h3>
+            <!-- Child Selection (shown after login) -->
+            <div class="child-selection" id="childSelection">
+                <div class="form-group">
+                    <label class="form-label" for="childSelect">
+                        <i class="fas fa-child"></i> Select Child
+                    </label>
+                    <select class="child-select" id="childSelect">
+                        <option value="" disabled selected>Select your child</option>
+                        <option value="john">John Smith - Grade 5</option>
+                        <option value="sarah">Sarah Smith - Grade 8</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="portal-features">
+                <h3 class="features-title">Parent Portal Features</h3>
                 <div class="features-grid">
                     <div class="feature-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Secure Data Encryption</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Real-time Analytics</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-comments"></i>
-                        <span>Parent-Teacher Communication</span>
-                    </div>
-                    <div class="feature-item">
                         <i class="fas fa-graduation-cap"></i>
-                        <span>Student Progress Tracking</span>
+                        <span>Grade Reports</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Attendance Tracking</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>School Notifications</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-receipt"></i>
+                        <span>Fee Management</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    
+    <script>
+        // Password toggle
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        // Form submission - Parent specific
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const parentId = document.getElementById('parentId').value;
+            const password = document.getElementById('password').value;
+            
+            if (!parentId || !password) {
+                alert('Please enter both your email/phone and password');
+                return;
+            }
+            
+            const loginButton = this.querySelector('.login-button');
+            const originalText = loginButton.innerHTML;
+            
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            loginButton.disabled = true;
+            
+            setTimeout(() => {
+                // Show child selection after successful login
+                document.getElementById('childSelection').style.display = 'block';
+                loginButton.innerHTML = '<span>Continue to Dashboard</span><i class="fas fa-arrow-right"></i>';
+                
+                // Change form submission to handle child selection
+                loginButton.addEventListener('click', function handleContinue() {
+                    const childSelect = document.getElementById('childSelect');
+                    if (!childSelect.value) {
+                        alert('Please select your child first');
+                        return;
+                    }
+                    
+                    const childName = childSelect.options[childSelect.selectedIndex].text;
+                    alert(`Welcome! Accessing ${childName}'s dashboard...`);
+                    
+                    // Remove the event listener after use
+                    loginButton.removeEventListener('click', handleContinue);
+                });
+                
+                // Simulate showing child selection
+                document.getElementById('parentId').disabled = true;
+                document.getElementById('password').disabled = true;
+                document.getElementById('togglePassword').disabled = true;
+                document.getElementById('rememberMe').disabled = true;
+                
+                loginButton.disabled = false;
+            }, 1500);
+        });
+        
+        // Focus on parent ID field
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('parentId').focus();
+            
+            // Auto-select text in demo mode
+            document.getElementById('parentId').addEventListener('click', function() {
+                if(this.value === '') {
+                    this.placeholder = 'e.g., parent@example.com or +1234567890';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

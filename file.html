@@ -54,23 +54,6 @@
         gap: 12px;
     }
 
-    .logo-circle {
-        width: 45px;
-        height: 45px;
-        background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
-    }
-
-    .logo-text {
-        color: var(--navy-blue);
-        font-size: 24px;
-        font-weight: 900;
-    }
-
     .platform-name {
         font-size: 22px;
         font-weight: 700;
@@ -153,16 +136,8 @@
         font-size: 18px;
     }
 
-    .sidebar-header {
-        padding: 20px 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        flex-shrink: 0;
-    }
-
-    .sidebar-nav {
-        padding: 20px 0;
-        flex: 1;
-        overflow-y: auto;
+    .sidebar-footer {
+        padding: 15px;
     }
 
     .badge-admin {
@@ -302,63 +277,6 @@
         box-shadow: 0 5px 15px rgba(10, 26, 58, 0.2);
     }
 
-    /* Admin Features */
-    .feature-card {
-        background: white;
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        height: 100%;
-        transition: all 0.3s ease;
-        border: 1px solid #e9ecef;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-    }
-
-    .feature-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 5px;
-        height: 100%;
-        background: linear-gradient(to bottom, var(--gold-primary), var(--gold-secondary));
-    }
-
-    .feature-icon {
-        width: 60px;
-        height: 60px;
-        background: rgba(212, 175, 55, 0.1);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-
-    .feature-icon i {
-        color: var(--gold-primary);
-        font-size: 28px;
-    }
-
-    .feature-title {
-        font-weight: 700;
-        color: var(--navy-blue);
-        margin-bottom: 10px;
-        font-size: 18px;
-    }
-
-    .feature-desc {
-        color: #666;
-        font-size: 14px;
-        line-height: 1.6;
-    }
-
     /* Recent Activity */
     .activity-list {
         background: white;
@@ -446,7 +364,7 @@
                 <img src="assets/images/Nexis logo.png" alt="logo" height="90px">
                 <h1 class="platform-name">Nexis</h1>
             </div>
-        </div> <!-- Fixed: removed extra closing div -->
+        </div>
 
         <div class="sidebar-nav">
             <ul class="list-unstyled">
@@ -477,7 +395,7 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-user-graduate"></i>
-                        <span>Student Enrollment</span>
+                        <span>Student Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -504,8 +422,6 @@
                         <span>Reports</span>
                     </a>
                 </li>
-
-                <!-- Logout button - added nav-item class -->
                 <li class="nav-item mt-4">
                     <a href="logout.php" class="nav-link logout">
                         <i class="fas fa-sign-out-alt"></i><span>Logout</span>
@@ -514,7 +430,6 @@
             </ul>
         </div>
 
-        <!-- Updated footer positioning -->
         <div class="sidebar-footer p-3">
             <div class="text-center">
                 <small class="text-muted">Admin Panel</small>
@@ -527,8 +442,6 @@
 
     <!-- Main Content -->
     <div id="content">
-        <!-- Top Header -->
-
         <button type="button" id="sidebarCollapse" class="btn">
             <i class="fas fa-bars"></i>
         </button>
@@ -587,243 +500,67 @@
             </div>
         </div>
 
-        <div class="row">
-            <!-- Left Column -->
-            <div class="col-lg-8">
-                <!-- Notice Board -->
-                <h3 class="section-title">
-                    <i class="fas fa-bullhorn"></i> Notice Board
-                </h3>
+        <!-- Notice Board -->
+        <h3 class="section-title">
+            <i class="fas fa-bullhorn"></i> Notice Board
+        </h3>
 
-                <div class="notice-board">
-                    <!-- Notice Item 1 -->
-                    <div class="notice-item">
-                        <span class="notice-category">Academic</span>
-                        <h4 class="notice-title">Results Management</h4>
-                        <p class="notice-desc">View, enter, and edit student results across all classes and subjects</p>
-                        <button class="btn-enter">
-                            <i class="fas fa-chart-bar"></i> Enter Results Panel
-                        </button>
-                    </div>
-
-                    <!-- Notice Item 2 -->
-                    <div class="notice-item">
-                        <span class="notice-category">Assessment</span>
-                        <h4 class="notice-title">Computer Based Test (CBT)</h4>
-                        <p class="notice-desc">Create, manage, and monitor computer-based assessments for students</p>
-                        <button class="btn-enter">
-                            <i class="fas fa-laptop-code"></i> Configure CBT
-                        </button>
-                    </div>
-
-                    <!-- Notice Item 3 -->
-                    <div class="notice-item">
-                        <span class="notice-category">Learning</span>
-                        <h4 class="notice-title">E-Learning Hub</h4>
-                        <p class="notice-desc">Access and manage the comprehensive e-learning platform resources</p>
-                        <button class="btn-enter">
-                            <i class="fas fa-graduation-cap"></i> Manage Hub
-                        </button>
-                    </div>
-
-                    <!-- Notice Item 4 -->
-                    <div class="notice-item">
-                        <span class="notice-category">Financial</span>
-                        <h4 class="notice-title">Fees Management</h4>
-                        <p class="notice-desc">View fee payments, receipts, and manage financial transactions</p>
-                        <button class="btn-enter">
-                            <i class="fas fa-money-check-alt"></i> View Finance
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Admin Features -->
-                <h3 class="section-title">
-                    <i class="fas fa-cogs"></i> Admin Control Panel
-                </h3>
-
-                <div class="row">
-                    <!-- Feature 1 -->
-                    <div class="col-md-6 mb-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-users-cog"></i>
-                            </div>
-                            <h5 class="feature-title">Staff Management</h5>
-                            <p class="feature-desc">Add, remove, and manage teaching and administrative staff members
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 2 -->
-                    <div class="col-md-6 mb-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                            </div>
-                            <h5 class="feature-title">Teacher Assignment</h5>
-                            <p class="feature-desc">Assign teachers to classes, subjects, and specific roles within the
-                                school</p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 3 -->
-                    <div class="col-md-6 mb-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-school"></i>
-                            </div>
-                            <h5 class="feature-title">Class Management</h5>
-                            <p class="feature-desc">Create classes and arms with custom naming conventions and
-                                configurations</p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 4 -->
-                    <div class="col-md-6 mb-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-user-graduate"></i>
-                            </div>
-                            <h5 class="feature-title">Student Enrollment</h5>
-                            <p class="feature-desc">Add students to classes, manage enrollments, and track student
-                                movements</p>
-                        </div>
-                    </div>
-                </div>
+        <div class="notice-board">
+            <div class="notice-item">
+                <span class="notice-category">Academic</span>
+                <h4 class="notice-title">Results Management</h4>
+                <p class="notice-desc">View, enter, and edit student results across all classes and subjects</p>
+                <button class="btn-enter">
+                    <i class="fas fa-chart-bar"></i> Enter Results Panel
+                </button>
             </div>
 
-            <!-- Right Column -->
-            <div class="col-lg-4">
-                <!-- Recent Activity -->
-                <h3 class="section-title">
-                    <i class="fas fa-history"></i> Recent Activity
-                </h3>
+            <div class="notice-item">
+                <span class="notice-category">Assessment</span>
+                <h4 class="notice-title">Computer Based Test (CBT)</h4>
+                <p class="notice-desc">Create, manage, and monitor computer-based assessments for students</p>
+                <button class="btn-enter">
+                    <i class="fas fa-laptop-code"></i> Configure CBT
+                </button>
+            </div>
 
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text">Results uploaded for JHS 2A</p>
-                            <small class="activity-time">Today, 10:30 AM</small>
-                        </div>
-                    </div>
+            <div class="notice-item">
+                <span class="notice-category">Learning</span>
+                <h4 class="notice-title">E-Learning Hub</h4>
+                <p class="notice-desc">Access and manage the comprehensive e-learning platform resources</p>
+                <button class="btn-enter">
+                    <i class="fas fa-graduation-cap"></i> Manage Hub
+                </button>
+            </div>
 
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-user-plus"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text">New teacher added: Mr. James Wilson</p>
-                            <small class="activity-time">Yesterday, 3:15 PM</small>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-coins"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text">Fee structure updated for 2024 academic year</p>
-                            <small class="activity-time">Mar 12, 2:45 PM</small>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text">Performance analytics generated for Term 1</p>
-                            <small class="activity-time">Mar 11, 11:20 AM</small>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-file-invoice"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text">Financial report exported for management</p>
-                            <small class="activity-time">Mar 10, 4:30 PM</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Stats -->
-                <h3 class="section-title mt-4">
-                    <i class="fas fa-chart-pie"></i> Quick Stats
-                </h3>
-
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-percentage"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text">Fee Collection Rate</p>
-                            <small class="activity-time">Current: 78% | Target: 85%</small>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-user-check"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text">Staff Attendance Today</p>
-                            <small class="activity-time">Present: 92% | Absent: 8%</small>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text">Student Performance</p>
-                            <small class="activity-time">Average Score: 72.5%</small>
-                        </div>
-                    </div>
-                </div>
+            <div class="notice-item">
+                <span class="notice-category">Financial</span>
+                <h4 class="notice-title">Fees Management</h4>
+                <p class="notice-desc">View fee payments, receipts, and manage financial transactions</p>
+                <button class="btn-enter">
+                    <i class="fas fa-money-check-alt"></i> View Finance
+                </button>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Recent Activity -->
+        <h3 class="section-title">
+            <i class="fas fa-history"></i> Recent Activity
+        </h3>
 
-    <script>
-        // Sidebar toggle for mobile
-        document.getElementById('sidebarCollapse').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
+        <div class="activity-list">
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="activity-content">
+                    <p class="activity-text">Results uploaded for JHS 2A</p>
+                    <small class="activity-time">Today, 10:30 AM</small>
+                </div>
+            </div>
 
-
-
-        // Feature cards click
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('click', function () {
-                const feature = this.querySelector('.feature-title').textContent;
-                alert(`Opening ${feature} panel`);
-            });
-        });
-
-        // Auto-close sidebar on mobile when clicking outside
-        document.addEventListener('click', function (event) {
-            const sidebar = document.getElementById('sidebar');
-            const sidebarCollapse = document.getElementById('sidebarCollapse');
-
-            if (window.innerWidth < 992 &&
-                !sidebar.contains(event.target) &&
-                !sidebarCollapse.contains(event.target) &&
-                sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-            }
-        });
-    </script>
-</body>
-
-</html>
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="activity

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexis - Portal</title>
+    <title>Nexis - Student Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
     <style>
@@ -37,14 +37,14 @@
             display: flex;
             width: 100%;
             max-width: 1100px;
-            height: 600px; /* Slightly taller */
+            height: 600px;
             background: white;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
         }
         
-        /* Left Panel - Slightly bigger */
+        /* Left Panel - Student Focused */
         .brand-panel {
             flex: 1;
             background: linear-gradient(145deg, var(--navy-blue) 0%, #152a57 100%);
@@ -125,8 +125,8 @@
             line-height: 1.4;
         }
         
-        /* Quick benefits */
-        .quick-benefits {
+        /* Student benefits */
+        .student-benefits {
             margin-top: 15px;
         }
         
@@ -145,7 +145,7 @@
             min-width: 20px;
         }
         
-        /* Right Panel - Slightly bigger */
+        /* Right Panel - Student Login */
         .login-panel {
             flex: 1;
             padding: 35px 30px;
@@ -155,51 +155,27 @@
         }
         
         .login-header {
-            margin-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
         }
         
         .login-title {
-            font-size: 20px;
+            font-size: 26px;
             font-weight: 700;
             color: var(--navy-blue);
             margin-bottom: 8px;
         }
         
         .login-subtitle {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .user-id-section {
-            margin-bottom: 25px;
-        }
-        
-        .section-label {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--navy-blue);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .role-select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid #ddd;
-            border-radius: 8px;
             font-size: 15px;
-            color: var(--navy-blue);
-            background-color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            color: #666;
+            margin-bottom: 5px;
         }
         
-        .role-select:focus {
-            outline: none;
-            border-color: var(--navy-blue);
-            box-shadow: 0 0 0 3px rgba(10, 26, 58, 0.1);
+        .student-id-note {
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
         }
         
         .form-group {
@@ -304,8 +280,8 @@
             box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
         }
         
-        /* Features grid */
-        .platform-features {
+        /* Student portal features */
+        .portal-features {
             margin-top: 30px;
             padding-top: 25px;
             border-top: 1px solid #eee;
@@ -316,6 +292,7 @@
             font-weight: 600;
             color: var(--navy-blue);
             margin-bottom: 15px;
+            text-align: center;
         }
         
         .features-grid {
@@ -335,6 +312,11 @@
         .feature-item i {
             color: var(--gold-primary);
             font-size: 14px;
+        }
+        
+        /* Role selector hidden for student login */
+        .role-select {
+            display: none;
         }
         
         /* Responsive */
@@ -358,7 +340,7 @@
 
 <body>
     <div class="container">
-        <!-- Left Panel -->
+        <!-- Left Panel - Student Focused -->
         <div class="brand-panel">
             <div class="brand-header">
                 <div class="logo-container">
@@ -368,65 +350,60 @@
             </div>
 
             <div class="welcome-content">
-                <h2 class="welcome-title">Welcome to Admin Portal</h2>
+                <h2 class="welcome-title">Student Learning Portal</h2>
                 <p class="welcome-text">
-                    Access the comprehensive school management system. Manage student records, academic results, communication, and administrative operations securely.
+                    Access your personalized learning dashboard, view assignments, check grades, 
+                    and connect with teachers. Your academic journey made simple and accessible.
                 </p>
 
                 <div class="highlight-box">
-                    <div class="highlight-title">Unified Platform</div>
-                    <p>Integrated solution for academic management, communication, and administrative tasks in one secure environment.</p>
+                    <div class="highlight-title">Your Learning Hub</div>
+                    <p>Track your progress, access learning materials, submit assignments, and stay connected with your educational journey.</p>
                 </div>
                 
-                <div class="quick-benefits">
+                <div class="student-benefits">
+                    <div class="benefit-item">
+                        <i class="fas fa-graduation-cap benefit-icon"></i>
+                        <span>Access Course Materials & Assignments</span>
+                    </div>
                     <div class="benefit-item">
                         <i class="fas fa-chart-line benefit-icon"></i>
-                        <span>Comprehensive Analytics & Reporting</span>
+                        <span>Track Academic Progress & Grades</span>
                     </div>
                     <div class="benefit-item">
-                        <i class="fas fa-shield-alt benefit-icon"></i>
-                        <span>Enterprise-grade Security & Encryption</span>
+                        <i class="fas fa-calendar-alt benefit-icon"></i>
+                        <span>View Timetable & Important Dates</span>
                     </div>
                     <div class="benefit-item">
-                        <i class="fas fa-sync-alt benefit-icon"></i>
-                        <span>Automated Workflows & Processes</span>
+                        <i class="fas fa-comments benefit-icon"></i>
+                        <span>Communicate with Teachers</span>
                     </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-users benefit-icon"></i>
-                        <span>Integrated Communication Tools</span>
-                    </div>
+                    
+                  
+                </a>
+            </li>
+
                 </div>
             </div>
         </div>
 
-        <!-- Right Panel -->
+        <!-- Right Panel - Student Login -->
         <div class="login-panel">
             <div class="login-header">
-                <h3 class="login-title">Secure Access Portal</h3>
-                <p class="login-subtitle">Enter your credentials to access the platform</p>
+                <h2 class="login-title">Student Portal Login</h2>
+                <p class="login-subtitle">Enter your student credentials</p>
+                <p class="student-id-note">Use your Student ID or registered email</p>
             </div>
 
-            <div class="user-id-section">
-                <div class="section-label">
-                    <i class="fas fa-user-tag"></i>
-                    <span>User Role Selection</span>
-                </div>
-                <select class="role-select" id="userId">
-                    <option value="" disabled selected>Select your role</option>
-                    <option value="admin">Administrator</option>
-                    <option value="head">Head of School</option>
-                    <option value="teacher">Subject Teacher</option>
-                    <option value="classteacher">Class Teacher</option>
-                </select>
-            </div>
+            <!-- Removed role selection for students -->
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label" for="username">
-                        <i class="fas fa-user-circle"></i> Username or Email
+                    <label class="form-label" for="studentId">
+                        <i class="fas fa-id-card"></i> Student ID / Email
                     </label>
-                    <input type="text" id="username" class="form-input" placeholder="Enter username or email address"
-                        required>
+                    <input type="text" id="studentId" class="form-input" 
+                           placeholder="Enter Student ID or email address" required>
                 </div>
 
                 <div class="form-group">
@@ -434,8 +411,8 @@
                         <i class="fas fa-key"></i> Password
                     </label>
                     <div class="password-container">
-                        <input type="password" id="password" class="form-input" placeholder="Enter your password"
-                            required>
+                        <input type="password" id="password" class="form-input" 
+                               placeholder="Enter your password" required>
                         <button type="button" class="password-toggle" id="togglePassword">
                             <i class="far fa-eye"></i>
                         </button>
@@ -445,42 +422,104 @@
                 <div class="form-options">
                     <div class="remember-me">
                         <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">Keep me logged in</label>
+                        <label for="rememberMe">Remember my login</label>
                     </div>
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
 
                 <button type="submit" class="login-button">
-                    <span>Access Platform</span>
-                    <i class="fas fa-arrow-right"></i>
+                    <span>Access Student Portal</span>
+                    <i class="fas fa-sign-in-alt"></i>
                 </button>
             </form>
 
-            <div class="platform-features">
-                <h3 class="features-title">Platform Features</h3>
+            <div class="portal-features">
+                <h3 class="features-title">Student Portal Features</h3>
                 <div class="features-grid">
                     <div class="feature-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Secure Data Encryption</span>
+                        <i class="fas fa-book-open"></i>
+                        <span>Course Materials</span>
                     </div>
                     <div class="feature-item">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Real-time Analytics</span>
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignment Submissions</span>
                     </div>
                     <div class="feature-item">
-                        <i class="fas fa-comments"></i>
-                        <span>Parent-Teacher Communication</span>
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Grade Reports</span>
                     </div>
                     <div class="feature-item">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span>Student Progress Tracking</span>
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Exam Schedule</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    
+    <script>
+        // Password toggle
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        // Form submission - Student specific
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const studentId = document.getElementById('studentId').value;
+            const password = document.getElementById('password').value;
+            
+            if (!studentId || !password) {
+                alert('Please enter both Student ID and password');
+                return;
+            }
+            
+            const loginButton = this.querySelector('.login-button');
+            const originalText = loginButton.innerHTML;
+            
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            loginButton.disabled = true;
+            
+            setTimeout(() => {
+                // Extract just the ID part for greeting
+                const idMatch = studentId.match(/[A-Za-z0-9]+/);
+                const greetingId = idMatch ? idMatch[0] : studentId;
+                
+                alert(`Welcome back, Student ${greetingId}! Accessing your portal...`);
+                
+                // Reset form
+                this.reset();
+                document.getElementById('password').type = 'password';
+                document.getElementById('togglePassword').querySelector('i').className = 'far fa-eye';
+                loginButton.innerHTML = originalText;
+                loginButton.disabled = false;
+            }, 1500);
+        });
+        
+        // Focus on student ID field
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('studentId').focus();
+            
+            // Auto-select text in demo mode
+            document.getElementById('studentId').addEventListener('click', function() {
+                if(this.value === '') {
+                    this.placeholder = 'e.g., S12345 or student@example.com';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
