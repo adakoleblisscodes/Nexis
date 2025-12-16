@@ -1,300 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexis LMS - Dashboard</title>
+    <title>Nexis LMS - Super Admin Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* ========== CSS VARIABLES ========== */
         :root {
             --navy-blue: #0a1a3a;
-            --navy-blue-light: #1a2a4a;
-            --gold-primary: #d4af37;
-            --gold-secondary: #f4d03f;
-            --sidebar-width: 280px;
+            --navy-light: #1a2a4a;
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --gray-light: #f8fafc;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        /* ========== BASE STYLES ========== */
         body {
-            background-color: #f8fafc;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--gray-light);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             overflow-x: hidden;
         }
         
-        /* Sidebar Styles */
-        #sidebar {
-            width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--navy-blue) 0%, var(--navy-blue-light) 100%);
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--navy-blue) 0%, var(--navy-light) 100%);
             color: white;
             height: 100vh;
             position: fixed;
             left: 0;
             top: 0;
-            z-index: 1000;
+            z-index: 1050;
+            padding: 0;
             box-shadow: 3px 0 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            flex-shrink: 0;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
         }
         
         .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .logo-container img {
-            height: 45px;
-            width: auto;
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1);
         }
         
         .platform-name {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
             color: white;
+            margin: 0;
         }
         
-        .sidebar-nav {
-            padding: 20px 0;
-            flex: 1;
-            overflow-y: auto;
-        }
-        
-        .nav-item {
-            margin-bottom: 5px;
+        .admin-badge {
+            background: var(--gold);
+            color: var(--navy-blue);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
         }
         
         .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.85);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-            text-decoration: none;
-            cursor: pointer;
         }
         
         .nav-link:hover, .nav-link.active {
             background: rgba(212, 175, 55, 0.15);
             color: white;
-            border-left: 3px solid var(--gold-primary);
+            border-left: 3px solid var(--gold);
         }
         
         .nav-link i {
             width: 20px;
             text-align: center;
-            font-size: 18px;
+            color: var(--gold);
         }
         
         .sidebar-footer {
             padding: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.1);
         }
         
-        .user-info {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        
-        .user-id {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 5px;
-        }
-        
-        .user-role {
-            font-size: 14px;
-            color: var(--gold-secondary);
-            font-weight: 600;
-        }
-        
-        .logout-btn {
-            width: 100%;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            cursor: pointer;
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 18px;
         }
         
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Main Content */
-        #content {
-            margin-left: var(--sidebar-width);
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            margin-left: 280px;
             padding: 25px;
-            transition: all 0.3s ease;
             min-height: 100vh;
+            background-color: var(--gray-light);
+            transition: margin-left 0.3s ease;
         }
         
-        /* Top Header */
+        /* ========== TOP HEADER ========== */
         .top-header {
             background: white;
             padding: 20px 30px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 25px;
         }
         
-        .page-title h1 {
-            color: var(--navy-blue);
-            font-weight: 700;
-            margin-bottom: 5px;
-            font-size: 28px;
-        }
-        
-        .welcome-text {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .notification-btn {
-            position: relative;
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--navy-blue);
-            cursor: pointer;
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff4444;
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-        }
-        
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 20px;
-        }
-        
-        .user-details h3 {
-            font-size: 16px;
-            color: var(--navy-blue);
-            margin-bottom: 5px;
-        }
-        
-        .user-details p {
-            font-size: 12px;
-            color: #666;
-        }
-        
-        /* Role Selector */
-        .role-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .role-btn {
-            padding: 12px 24px;
-            border: 2px solid #ddd;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            color: #666;
-        }
-        
-        .role-btn:hover {
-            border-color: var(--navy-blue);
-            color: var(--navy-blue);
-        }
-        
-        .role-btn.active {
-            background: var(--navy-blue);
-            border-color: var(--navy-blue);
-            color: white;
-        }
-        
-        /* Dashboard Content */
-        .dashboard-section {
-            display: none;
-        }
-        
-        .dashboard-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Dashboard Cards */
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
+        /* ========== DASHBOARD CARDS ========== */
         .dashboard-card {
             background: white;
+            border: none;
             border-radius: 12px;
-            padding: 25px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            height: 100%;
             border: 1px solid #e9ecef;
         }
         
@@ -303,694 +145,857 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
         
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .card-icon {
-            width: 50px;
-            height: 50px;
+        .card-icon-container {
+            width: 60px;
+            height: 60px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            color: white;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--navy-blue), var(--navy-light));
         }
         
-        .super-admin .card-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .admin .card-icon {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-        
-        .head-teacher .card-icon {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-        
-        .teacher .card-icon {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        }
-        
-        .student .card-icon {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
-        
-        .card-title {
-            font-weight: 700;
-            color: var(--navy-blue);
-            font-size: 16px;
-        }
-        
-        .card-content {
-            margin-top: 15px;
-        }
-        
-        .card-number {
-            font-size: 32px;
+        .card-value {
+            font-size: 2.2rem;
             font-weight: 800;
             color: var(--navy-blue);
-            margin-bottom: 10px;
-        }
-        
-        .card-label {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .card-footer {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        
-        .card-action {
-            color: var(--navy-blue);
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        
-        /* Quick Actions */
-        .quick-actions {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-        }
-        
-        .actions-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        
-        .actions-title {
-            color: var(--navy-blue);
-            font-weight: 700;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .actions-title i {
-            color: var(--gold-primary);
-        }
-        
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        
-        .action-item {
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .action-item:hover {
-            transform: translateY(-3px);
-            background: white;
-            border-color: var(--gold-primary);
-        }
-        
-        .action-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(212, 175, 55, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            color: var(--gold-primary);
-            font-size: 22px;
-        }
-        
-        .action-name {
-            font-weight: 600;
-            color: var(--navy-blue);
+            line-height: 1;
             margin-bottom: 5px;
         }
         
-        .action-desc {
-            font-size: 13px;
+        .card-label {
             color: #666;
+            font-size: 0.9rem;
         }
         
-        /* Recent Activity */
-        .recent-activity {
+        /* ========== LEVEL CARDS ========== */
+        .level-card {
             background: white;
             border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid;
+            transition: all 0.3s ease;
         }
         
-        .activity-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
+        .nursery-card { border-left-color: #9c27b0; }
+        .primary-card { border-left-color: #2196f3; }
+        .secondary-card { border-left-color: #4caf50; }
+        
+        /* ========== ACTIVITY CARDS ========== */
+        .activity-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            height: 100%;
         }
         
-        .activity-title {
-            color: var(--navy-blue);
-            font-weight: 700;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .activity-title i {
-            color: var(--gold-primary);
-        }
-        
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .activity-item {
+        /* ========== QUICK STATS ========== */
+        .quick-stat {
             display: flex;
             align-items: center;
             gap: 15px;
             padding: 15px;
             background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid var(--gold-primary);
+            border-radius: 10px;
+            border-left: 4px solid var(--gold);
         }
         
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(212, 175, 55, 0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold-primary);
-        }
-        
-        .activity-details {
-            flex: 1;
-        }
-        
-        .activity-text {
-            font-weight: 600;
-            color: var(--navy-blue);
-            margin-bottom: 5px;
-        }
-        
-        .activity-time {
-            font-size: 12px;
-            color: #666;
-        }
-        
-        /* Toggle Button for Mobile */
-        #sidebarCollapse {
-            display: none;
-            background: var(--navy-blue);
+        /* ========== BUTTONS ========== */
+        .btn-gold {
+            background: var(--gold);
+            border-color: var(--gold);
             color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 15px;
-            margin-bottom: 20px;
-        }
-        
-        /* Buttons */
-        .btn-outline {
-            background: white;
-            color: var(--navy-blue);
-            border: 1px solid #ddd;
-            padding: 10px 20px;
-            border-radius: 6px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
         
-        .btn-outline:hover {
-            background: #f8f9fa;
-            border-color: var(--navy-blue);
+        .btn-gold:hover {
+            background: #b8941f;
+            border-color: #b8941f;
+            color: white;
         }
         
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .dashboard-cards {
-                grid-template-columns: repeat(2, 1fr);
+        /* ========== MOBILE MENU TOGGLE ========== */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--navy-blue);
+        }
+        
+        /* ========== MOBILE OVERLAY (for sidebar on mobile) ========== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+        }
+        
+        /* ========== RESPONSIVE STYLES ========== */
+        /* Large screens (desktops) */
+        @media (min-width: 1200px) {
+            .col-xl-2-4 {
+                flex: 0 0 20%;
+                max-width: 20%;
             }
         }
         
-        @media (max-width: 992px) {
-            #sidebar {
-                margin-left: -280px;
+        /* Medium screens (tablets) */
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .dashboard-card .card-value {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Small screens (mobile) */
+        @media (max-width: 767px) {
+            /* Hide sidebar by default on mobile */
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
             }
             
-            #sidebar.active {
-                margin-left: 0;
+            .sidebar.active {
+                transform: translateX(0);
             }
             
-            #content {
-                margin-left: 0;
-            }
-            
-            #sidebarCollapse {
+            /* Show mobile menu toggle button */
+            .mobile-menu-toggle {
                 display: block;
             }
             
-            .dashboard-cards {
-                grid-template-columns: repeat(2, 1fr);
+            /* Adjust main content for mobile */
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            
+            /* Adjust top header for mobile */
+            .top-header {
+                padding: 15px;
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .top-header > div {
+                width: 100%;
+            }
+            
+            .header-right {
+                margin-top: 15px;
+                justify-content: space-between;
+            }
+            
+            /* Adjust card values for mobile */
+            .card-value {
+                font-size: 1.8rem;
+            }
+            
+            /* Make charts and cards stack vertically */
+            .chart-card canvas {
+                max-height: 200px;
+            }
+            
+            /* Adjust activity items for mobile */
+            .activity-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .activity-item .badge {
+                align-self: flex-start;
             }
         }
         
-        @media (max-width: 768px) {
-            .dashboard-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .actions-grid {
-                grid-template-columns: repeat(2, 1fr);
+        /* Extra small screens (very small mobile) */
+        @media (max-width: 575px) {
+            .main-content {
+                padding: 10px;
             }
             
             .top-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
+                padding: 12px;
             }
             
-            .header-actions {
-                flex-direction: column;
+            .card-value {
+                font-size: 1.6rem;
             }
             
-            .role-selector {
-                justify-content: center;
+            .platform-name {
+                font-size: 20px;
+            }
+            
+            .dashboard-card .btn {
+                width: 100%;
             }
         }
         
-        @media (max-width: 480px) {
-            .actions-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Custom scrollbar */
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
         }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+        
+        /* Text colors for easy reading */
+        .text-gold { color: var(--gold); }
+        .text-purple { color: #9c27b0; }
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-danger { color: var(--danger); }
+        .text-info { color: var(--info); }
     </style>
 </head>
-
 <body>
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
     <!-- Sidebar -->
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-container">
-                <img src="assets/images/Nexis logo.png" alt="logo" height="45">
-                <h1 class="platform-name">Nexis</h1>
+    <div class="sidebar d-flex flex-column">
+        <!-- Logo Section -->
+        <div class="logo-container">
+            <div class="d-flex align-items-center">
+                <!-- Logo (using placeholder, replace with your logo) -->
+                <div class="user-avatar me-3">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="platform-name">Nexis <span class="admin-badge">SUPER ADMIN</span></h3>
             </div>
         </div>
         
-        <div class="sidebar-nav" id="sidebarNav">
-            <!-- Navigation will be populated based on role -->
+        <!-- Navigation Menu -->
+        <div class="nav flex-column flex-grow-1 mt-3" id="sidebarNav">
+            <!-- Navigation items will be loaded here by JavaScript -->
         </div>
         
+        <!-- User Profile & Logout -->
         <div class="sidebar-footer">
-            <div class="user-info">
-                <p class="user-id" id="userId">ID: T-001</p>
-                <p class="user-role" id="userRole">Class Teacher</p>
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="user-avatar" id="userAvatar">SA</div>
+                <div>
+                    <p class="mb-0 fw-bold" id="userName">Super Administrator</p>
+                    <small class="text-gold" id="userEmail">admin@nexis.edu</small>
+                </div>
             </div>
-            <button class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Sign Out
+            <button class="btn btn-outline-light w-100" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-2"></i> Sign Out
             </button>
         </div>
-    </nav>
-
+    </div>
+    
     <!-- Main Content -->
-    <div id="content">
+    <div class="main-content">
         <!-- Top Header -->
-        <button type="button" id="sidebarCollapse" class="btn">
-            <i class="fas fa-bars"></i>
-        </button>
-        
-        <div class="top-header">
-            <div class="page-title">
-                <h1 id="dashboardTitle">Teacher Dashboard</h1>
-                <p class="welcome-text" id="welcomeMessage">Welcome back, Mr. David Williams</p>
-            </div>
-            <div class="header-actions">
-                <button class="notification-btn">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+        <div class="top-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <!-- Mobile Menu Toggle Button -->
+                <button class="mobile-menu-toggle me-3" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
                 </button>
-                <div class="user-profile">
-                    <div class="user-avatar">DW</div>
-                    <div class="user-details">
-                        <h3 id="userName">Mr. David Williams</h3>
-                        <p id="userDetails">Grade 3 • Mathematics</p>
-                    </div>
+                <div>
+                    <h1 class="h4 mb-1 fw-bold" id="dashboardTitle">Super Admin Dashboard</h1>
+                    <p class="text-muted mb-0" id="welcomeMessage">System Overview & Control Panel</p>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3 header-right">
+                <!-- Notifications -->
+                <button class="notification-btn position-relative">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">3</span>
+                </button>
+                
+                <!-- Quick Actions Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-cog me-2"></i> <span class="d-none d-md-inline">Quick Actions</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="showAddUser()"><i class="fas fa-user-plus me-2"></i>Add New User</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showSystemSettings()"><i class="fas fa-cogs me-2"></i>System Settings</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showAnnouncements()"><i class="fas fa-bullhorn me-2"></i>Send Announcement</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-
-        <!-- Role Selector -->
-        <div class="role-selector">
-            <button class="role-btn active" onclick="switchRole('teacher')">
-                Class Teacher
-            </button>
-            <button class="role-btn" onclick="switchRole('super-admin')">
-                Super Admin
-            </button>
-            <button class="role-btn" onclick="switchRole('admin')">
-                School Admin
-            </button>
-            <button class="role-btn" onclick="switchRole('head-teacher')">
-                Head Teacher
-            </button>
-    
-        </div>
-
-        <!-- Dashboard Sections -->
+        
+        <!-- Dashboard Content -->
         <div id="dashboardContent">
-            <!-- Content will be populated based on selected role -->
+            <!-- Content will be loaded here by JavaScript -->
         </div>
     </div>
 
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
-        // Role Data - Just UI, no logic
-        const roleData = {
-            'super-admin': {
-                title: 'Super Admin Dashboard',
-                welcome: 'System Administration & Control',
-                userName: 'Sarah Admin',
-                userDetails: 'System Administrator • Full Access',
-                userAvatar: 'SA',
-                userId: 'SA-001',
-                userRole: 'Super Administrator',
-                navItems: [
-                    { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true },
-                    { icon: 'fa-users', name: 'All Users' },
-                    { icon: 'fa-school', name: 'All Schools' },
-                    { icon: 'fa-chalkboard-teacher', name: 'All Teachers' },
-                    { icon: 'fa-user-graduate', name: 'All Students' },
-                    { icon: 'fa-cogs', name: 'System Settings' },
-                    { icon: 'fa-chart-bar', name: 'Analytics' },
-                    { icon: 'fa-shield-alt', name: 'Security' }
-                ],
-                cards: [
-                    { icon: 'fa-school', title: 'Total Schools', value: '3', label: 'Nursery, Primary, Secondary', action: 'View All' },
-                    { icon: 'fa-users', title: 'Total Users', value: '2,500', label: 'Across all levels', action: 'Manage Users' },
-                    { icon: 'fa-chalkboard-teacher', title: 'Teachers', value: '125', label: 'Active teaching staff', action: 'View Staff' },
-                    { icon: 'fa-user-graduate', title: 'Students', value: '2,375', label: 'Enrolled students', action: 'View Students' }
-                ],
-                quickActions: [
-                    { icon: 'fa-user-plus', name: 'Add User', desc: 'Create new user accounts' },
-                    { icon: 'fa-school', name: 'Add School', desc: 'Register new school' },
-                    { icon: 'fa-cog', name: 'System Settings', desc: 'Configure system settings' },
-                    { icon: 'fa-shield-alt', name: 'Security', desc: 'Manage security settings' },
-                    { icon: 'fa-download', name: 'Backup', desc: 'System backup' },
-                    { icon: 'fa-chart-bar', name: 'Reports', desc: 'Generate reports' }
-                ],
-                activities: [
-                    { icon: 'fa-user-plus', text: 'New user account created', time: '10 minutes ago' },
-                    { icon: 'fa-cog', text: 'System settings updated', time: '30 minutes ago' },
-                    { icon: 'fa-shield-alt', text: 'Security audit completed', time: '2 hours ago' },
-                    { icon: 'fa-download', text: 'System backup initiated', time: '4 hours ago' }
-                ]
-            },
-            'admin': {
-                title: 'School Admin Dashboard',
-                welcome: 'School Administration & Management',
-                userName: 'Michael Johnson',
-                userDetails: 'School Administrator • Primary School',
-                userAvatar: 'MJ',
-                userId: 'AD-001',
-                userRole: 'School Administrator',
-                navItems: [
-                    { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true },
-                    { icon: 'fa-users', name: 'Students' },
-                    { icon: 'fa-chalkboard-teacher', name: 'Teachers' },
-                    { icon: 'fa-book', name: 'Courses' },
-                    { icon: 'fa-calendar-alt', name: 'Timetable' },
-                    { icon: 'fa-chart-bar', name: 'Reports' },
-                    { icon: 'fa-cog', name: 'Settings' }
-                ],
-                cards: [
-                    { icon: 'fa-user-graduate', title: 'Total Students', value: '856', label: 'Primary School students', action: 'View Students' },
-                    { icon: 'fa-chalkboard-teacher', title: 'Teachers', value: '42', label: 'Teaching staff', action: 'View Teachers' },
-                    { icon: 'fa-book', title: 'Courses', value: '12', label: 'Active courses', action: 'Manage Courses' },
-                    { icon: 'fa-percentage', title: 'Attendance', value: '92%', label: 'Today\'s attendance', action: 'View Details' }
-                ],
-                quickActions: [
-                    { icon: 'fa-user-plus', name: 'Add Student', desc: 'Enroll new student' },
-                    { icon: 'fa-chalkboard-teacher', name: 'Add Teacher', desc: 'Add teaching staff' },
-                    { icon: 'fa-book-medical', name: 'Add Course', desc: 'Create new course' },
-                    { icon: 'fa-calendar-plus', name: 'Schedule', desc: 'Manage timetable' },
-                    { icon: 'fa-file-export', name: 'Export', desc: 'Export reports' },
-                    { icon: 'fa-bell', name: 'Announcements', desc: 'Send announcements' }
-                ],
-                activities: [
-                    { icon: 'fa-user-graduate', text: '5 new students enrolled', time: '15 minutes ago' },
-                    { icon: 'fa-chalkboard-teacher', text: 'Teacher assigned to class', time: '1 hour ago' },
-                    { icon: 'fa-calendar', text: 'New timetable published', time: '3 hours ago' },
-                    { icon: 'fa-bell', text: 'Announcement sent to parents', time: '5 hours ago' }
-                ]
-            },
-            'head-teacher': {
-                title: 'Head Teacher Dashboard',
-                welcome: 'Academic Leadership & Supervision',
-                userName: 'Dr. Lisa Chen',
-                userDetails: 'Head Teacher • Secondary School',
-                userAvatar: 'LC',
-                userId: 'HT-001',
-                userRole: 'Head Teacher',
-                navItems: [
-                    { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true },
-                    { icon: 'fa-chalkboard-teacher', name: 'My Teachers' },
-                    { icon: 'fa-user-graduate', name: 'Students' },
-                    { icon: 'fa-chart-bar', name: 'Performance' },
-                    { icon: 'fa-calendar-check', name: 'Attendance' },
-                    { icon: 'fa-file-alt', name: 'Reports' },
-                    { icon: 'fa-comments', name: 'Communications' }
-                ],
-                cards: [
-                    { icon: 'fa-chalkboard-teacher', title: 'Teachers', value: '15', label: 'Under supervision', action: 'View Teachers' },
-                    { icon: 'fa-user-graduate', title: 'Students', value: '320', label: 'Total students', action: 'View Students' },
-                    { icon: 'fa-chart-line', title: 'Performance', value: '85%', label: 'Average score', action: 'View Details' },
-                    { icon: 'fa-calendar-check', title: 'Attendance', value: '94%', label: 'This week', action: 'View Report' }
-                ],
-                quickActions: [
-                    { icon: 'fa-clipboard-check', name: 'Approve Leave', desc: 'Teacher leave requests' },
-                    { icon: 'fa-chart-line', name: 'Performance', desc: 'View performance reports' },
-                    { icon: 'fa-calendar-alt', name: 'Schedule', desc: 'View school schedule' },
-                    { icon: 'fa-comment-alt', name: 'Feedback', desc: 'Provide feedback' },
-                    { icon: 'fa-bullhorn', name: 'Announce', desc: 'Make announcements' },
-                    { icon: 'fa-file-export', name: 'Reports', desc: 'Generate reports' }
-                ],
-                activities: [
-                    { icon: 'fa-clipboard-check', text: 'Leave request approved', time: '20 minutes ago' },
-                    { icon: 'fa-chart-line', text: 'Performance report reviewed', time: '1 hour ago' },
-                    { icon: 'fa-comment-alt', text: 'Feedback provided to teacher', time: '2 hours ago' },
-                    { icon: 'fa-bullhorn', text: 'Staff meeting announced', time: '1 day ago' }
-                ]
-            },
-            'teacher': {
-                title: 'Teacher Dashboard',
-                welcome: 'Welcome back, Mr. David Williams',
-                userName: 'Mr. David Williams',
-                userDetails: 'Grade 3 • Mathematics',
-                userAvatar: 'DW',
-                userId: 'T-001',
-                userRole: 'Class Teacher',
-                navItems: [
-                    { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true },
-                    { icon: 'fa-user-graduate', name: 'My Students' },
-                    { icon: 'fa-book', name: 'My Courses' },
-                    { icon: 'fa-tasks', name: 'Assignments' },
-                    { icon: 'fa-graduation-cap', name: 'Grades' },
-                    { icon: 'fa-calendar-alt', name: 'Schedule' },
-                    { icon: 'fa-comments', name: 'Messages' }
-                ],
-                cards: [
-                    { icon: 'fa-user-graduate', title: 'Students', value: '32', label: 'In my class', action: 'View Class' },
-                    { icon: 'fa-book', title: 'Courses', value: '4', label: 'Subjects teaching', action: 'View Courses' },
-                    { icon: 'fa-tasks', title: 'Assignments', value: '8', label: 'Pending grading', action: 'Grade Now' },
-                    { icon: 'fa-clock', title: 'Schedule', value: 'Today', label: 'Next: Mathematics 10 AM', action: 'View Schedule' }
-                ],
-                quickActions: [
-                    { icon: 'fa-tasks', name: 'Create Assignment', desc: 'New assignment' },
-                    { icon: 'fa-graduation-cap', name: 'Enter Grades', desc: 'Grade student work' },
-                    { icon: 'fa-calendar-plus', name: 'Schedule', desc: 'View timetable' },
-                    { icon: 'fa-comment-alt', name: 'Feedback', desc: 'Student feedback' },
-                    { icon: 'fa-envelope', name: 'Message Parents', desc: 'Send messages' },
-                    { icon: 'fa-chart-bar', name: 'Progress', desc: 'Student progress' }
-                ],
-                activities: [
-                    { icon: 'fa-tasks', text: 'Assignment created for Mathematics', time: '30 minutes ago' },
-                    { icon: 'fa-graduation-cap', text: 'Grades entered for Science test', time: '2 hours ago' },
-                    { icon: 'fa-comment-alt', text: 'Feedback sent to 5 students', time: '4 hours ago' },
-                    { icon: 'fa-envelope', text: 'Message sent to parent', time: '1 day ago' }
-                ]
+        // ========== SUPER ADMIN DATA ==========
+        // This is where all the dashboard information is stored
+        const superAdminData = {
+            title: 'Super Admin Dashboard',
+            welcome: 'System Overview & Control Panel',
+            userName: 'Super Administrator',
+            userEmail: 'admin@nexis.edu',
+            userAvatar: 'SA',
+            
+            // Navigation Items (left sidebar menu)
+            navItems: [
+                { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true },
+                { icon: 'fa-user-graduate', name: 'Student Management' },
+                { icon: 'fa-chalkboard-teacher', name: 'Teacher Management' },
+                { icon: 'fa-user-tie', name: 'Admin Management' },
+                { icon: 'fa-school', name: 'School Setup & Configuration' },
+                { icon: 'fa-shield-alt', name: 'User Roles & Permissions' },
+                { icon: 'fa-money-check-alt', name: 'Payments History' },
+                { icon: 'fa-cogs', name: 'System Settings' },
+                { icon: 'fa-bell', name: 'Notifications' }
+            ],
+            
+            // Dashboard Statistics (shown in the cards)
+            stats: {
+                totalStudents: 2375,
+                totalTeachers: 125,
+                totalStaff: 185,
+                totalSchools: 3,
+                activeStudents: 2250,
+                inactiveStudents: 75,
+                suspendedStudents: 50,
+                graduatedStudents: 0,
+                
+                // Level-wise distribution
+                nurseryStudents: 245,
+                primaryStudents: 856,
+                secondaryStudents: 1274,
+                
+                // Staff breakdown
+                teachingStaff: 125,
+                nonTeachingStaff: 60,
+                
+                // Branch distribution
+                branchStudents: {
+                    'Main Campus': 1200,
+                    'North Branch': 750,
+                    'West Branch': 425
+                }
             },
             
+            // Recent Activities (shown in activity log)
+            activities: [
+                { icon: 'fa-user-plus', text: 'New student enrolled in Primary School', time: '10 min ago', type: 'student' },
+                { icon: 'fa-chalkboard-teacher', text: 'Teacher assigned to Grade 10 Mathematics', time: '30 min ago', type: 'teacher' },
+                { icon: 'fa-user-tie', text: 'New admin account created for North Branch', time: '1 hour ago', type: 'admin' },
+                { icon: 'fa-school', text: 'New academic year configured for Secondary', time: '2 hours ago', type: 'system' },
+                { icon: 'fa-money-check-alt', text: 'Monthly fee report generated', time: '4 hours ago', type: 'finance' },
+                { icon: 'fa-cog', text: 'System settings updated', time: '1 day ago', type: 'system' },
+                { icon: 'fa-shield-alt', text: 'Security audit completed', time: '2 days ago', type: 'security' }
+            ],
+            
+            // System Alerts (shown in alerts section)
+            alerts: [
+                { level: 'warning', text: 'Low storage space on server (15% remaining)', time: '2 hours ago' },
+                { level: 'info', text: '5 teacher accounts pending approval', time: '1 day ago' },
+                { level: 'warning', text: 'High server load detected', time: '2 days ago' }
+            ]
         };
 
-        // Current role (default: teacher)
-        let currentRole = 'teacher';
-
-        // Initialize
+        // ========== INITIALIZE DASHBOARD ==========
+        // This runs when the page is fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            initializeDashboard();
-            setupMobileSidebar();
+            loadDashboard();      // Load all dashboard content
+            setupCharts();        // Setup charts and graphs
+            setupMobileMenu();    // Setup mobile menu functionality
+            
+            // Update dashboard every 30 seconds (optional)
+            // setInterval(updateDashboard, 30000);
         });
 
-        // Switch role
-        function switchRole(role) {
-            currentRole = role;
+        // ========== LOAD DASHBOARD ==========
+        // This function loads all the dashboard content
+        function loadDashboard() {
+            const data = superAdminData;
             
-            // Update active button
-            document.querySelectorAll('.role-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Update dashboard
-            updateDashboard();
-        }
-
-        // Initialize dashboard
-        function initializeDashboard() {
-            updateDashboard();
-        }
-
-        // Update dashboard based on role
-        function updateDashboard() {
-            const data = roleData[currentRole];
-            
-            // Update header
+            // Update header information
             document.getElementById('dashboardTitle').textContent = data.title;
             document.getElementById('welcomeMessage').textContent = data.welcome;
             document.getElementById('userName').textContent = data.userName;
-            document.getElementById('userDetails').textContent = data.userDetails;
-            document.querySelector('.user-avatar').textContent = data.userAvatar;
+            document.getElementById('userEmail').textContent = data.userEmail;
+            document.getElementById('userAvatar').textContent = data.userAvatar;
             
-            // Update sidebar
-            document.getElementById('userId').textContent = `ID: ${data.userId}`;
-            document.getElementById('userRole').textContent = data.userRole;
+            // Load navigation menu
+            loadNavigation(data.navItems);
             
-            updateNavigation(data.navItems);
-            updateDashboardContent(data);
+            // Load main dashboard content
+            loadDashboardContent(data);
         }
 
-        // Update navigation
-        function updateNavigation(navItems) {
+        // ========== LOAD NAVIGATION MENU ==========
+        // This creates the sidebar navigation menu
+        function loadNavigation(navItems) {
             const sidebarNav = document.getElementById('sidebarNav');
-            sidebarNav.innerHTML = navItems.map(item => `
-                <li class="nav-item">
-                    <a class="nav-link ${item.active ? 'active' : ''}">
-                        <i class="fas ${item.icon}"></i>
-                        <span>${item.name}</span>
-                    </a>
-                </li>
-            `).join('');
+            let navHTML = '';
+            
+            // Create HTML for each navigation item
+            navItems.forEach(item => {
+                navHTML += `
+                    <div class="nav-item">
+                        <a class="nav-link ${item.active ? 'active' : ''}" href="#" onclick="navigateTo('${item.name.toLowerCase().replace(/ /g, '-')}')">
+                            <i class="fas ${item.icon}"></i>
+                            <span>${item.name}</span>
+                        </a>
+                    </div>
+                `;
+            });
+            
+            sidebarNav.innerHTML = navHTML;
         }
 
-        // Update dashboard content
-        function updateDashboardContent(data) {
+        // ========== LOAD DASHBOARD CONTENT ==========
+        // This creates the main dashboard content
+        function loadDashboardContent(data) {
             const dashboardContent = document.getElementById('dashboardContent');
             
+            // Create HTML for the dashboard
             dashboardContent.innerHTML = `
-                <div class="dashboard-cards ${currentRole}">
-                    ${data.cards.map(card => `
+                <!-- Row 1: Quick Stats Cards -->
+                <div class="row mb-4">
+                    <!-- Card 1: Total Students -->
+                    <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
                         <div class="dashboard-card">
-                            <div class="card-header">
-                                <div class="card-icon">
-                                    <i class="fas ${card.icon}"></i>
+                            <div class="card-body">
+                                <div class="card-icon-container">
+                                    <i class="fas fa-user-graduate text-white"></i>
                                 </div>
-                                <div class="card-title">${card.title}</div>
+                                <h2 class="card-value">${data.stats.totalStudents.toLocaleString()}</h2>
+                                <h5 class="card-title mb-2">Total Students</h5>
+                                <p class="card-label">Across all branches & levels</p>
+                                <button class="btn btn-sm btn-gold mt-2" onclick="navigateTo('student-management')">
+                                    View Details <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
                             </div>
-                            <div class="card-content">
-                                <div class="card-number">${card.value}</div>
-                                <div class="card-label">${card.label}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2: Teaching Staff -->
+                    <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
+                        <div class="dashboard-card">
+                            <div class="card-body">
+                                <div class="card-icon-container">
+                                    <i class="fas fa-chalkboard-teacher text-white"></i>
+                                </div>
+                                <h2 class="card-value">${data.stats.totalTeachers}</h2>
+                                <h5 class="card-title mb-2">Teaching Staff</h5>
+                                <p class="card-label">Active teaching personnel</p>
+                                <button class="btn btn-sm btn-gold mt-2" onclick="navigateTo('teacher-management')">
+                                    Manage Teachers <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
                             </div>
-                            <div class="card-footer">
-                                <div class="card-action">
-                                    <span>${card.action}</span>
-                                    <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 3: Total Staff -->
+                    <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
+                        <div class="dashboard-card">
+                            <div class="card-body">
+                                <div class="card-icon-container">
+                                    <i class="fas fa-users text-white"></i>
+                                </div>
+                                <h2 class="card-value">${data.stats.totalStaff}</h2>
+                                <h5 class="card-title mb-2">Total Staff</h5>
+                                <p class="card-label">Teaching + Non-teaching staff</p>
+                                <button class="btn btn-sm btn-gold mt-2" onclick="showStaffDetails()">
+                                    View Breakdown <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 4: Schools/Branches -->
+                    <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
+                        <div class="dashboard-card">
+                            <div class="card-body">
+                                <div class="card-icon-container">
+                                    <i class="fas fa-school text-white"></i>
+                                </div>
+                                <h2 class="card-value">${data.stats.totalSchools}</h2>
+                                <h5 class="card-title mb-2">Schools/Branches</h5>
+                                <p class="card-label">Managed institutions</p>
+                                <button class="btn btn-sm btn-gold mt-2" onclick="navigateTo('school-setup-configuration')">
+                                    Configure <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 2: Charts and Student Status -->
+                <div class="row mb-4">
+                    <!-- Student Distribution Chart -->
+                    <div class="col-lg-8 mb-4">
+                        <div class="activity-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="mb-0 fw-bold">
+                                    <i class="fas fa-chart-pie me-2 text-gold"></i>
+                                    Student Distribution by Level
+                                </h5>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary active">Levels</button>
+                                    <button class="btn btn-sm btn-outline-secondary">Branches</button>
+                                    <button class="btn btn-sm btn-outline-secondary">Status</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Chart Canvas -->
+                                <div class="col-md-8">
+                                    <canvas id="studentDistributionChart" height="250"></canvas>
+                                </div>
+                                
+                                <!-- Level Distribution Cards -->
+                                <div class="col-md-4">
+                                    <div class="d-flex flex-column gap-3">
+                                        <!-- Nursery Card -->
+                                        <div class="level-card nursery-card">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h4 class="fw-bold mb-0">${data.stats.nurseryStudents}</h4>
+                                                    <small class="text-muted">Nursery Students</small>
+                                                </div>
+                                                <i class="fas fa-baby fa-2x text-purple"></i>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Primary Card -->
+                                        <div class="level-card primary-card">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h4 class="fw-bold mb-0">${data.stats.primaryStudents}</h4>
+                                                    <small class="text-muted">Primary Students</small>
+                                                </div>
+                                                <i class="fas fa-child fa-2x text-primary"></i>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Secondary Card -->
+                                        <div class="level-card secondary-card">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h4 class="fw-bold mb-0">${data.stats.secondaryStudents}</h4>
+                                                    <small class="text-muted">Secondary Students</small>
+                                                </div>
+                                                <i class="fas fa-graduation-cap fa-2x text-success"></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    `).join('')}
+                    </div>
+                    
+                    <!-- Student Status Overview -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="mb-0 fw-bold">
+                                    <i class="fas fa-chart-bar me-2 text-gold"></i>
+                                    Student Status Overview
+                                </h5>
+                            </div>
+                            <div class="d-flex flex-column gap-3">
+                                <!-- Active Students -->
+                                <div class="quick-stat">
+                                    <div class="flex-grow-1">
+                                        <h4 class="fw-bold mb-0">${data.stats.activeStudents}</h4>
+                                        <small class="text-muted">Active Students</small>
+                                    </div>
+                                    <i class="fas fa-user-check fa-2x text-success"></i>
+                                </div>
+                                
+                                <!-- Inactive Students -->
+                                <div class="quick-stat">
+                                    <div class="flex-grow-1">
+                                        <h4 class="fw-bold mb-0">${data.stats.inactiveStudents}</h4>
+                                        <small class="text-muted">Inactive Students</small>
+                                    </div>
+                                    <i class="fas fa-user-clock fa-2x text-warning"></i>
+                                </div>
+                                
+                                <!-- Suspended Students -->
+                                <div class="quick-stat">
+                                    <div class="flex-grow-1">
+                                        <h4 class="fw-bold mb-0">${data.stats.suspendedStudents}</h4>
+                                        <small class="text-muted">Suspended Students</small>
+                                    </div>
+                                    <i class="fas fa-user-slash fa-2x text-danger"></i>
+                                </div>
+                                
+                                <!-- Graduated Students -->
+                                <div class="quick-stat">
+                                    <div class="flex-grow-1">
+                                        <h4 class="fw-bold mb-0">${data.stats.graduatedStudents}</h4>
+                                        <small class="text-muted">Graduated Students</small>
+                                    </div>
+                                    <i class="fas fa-user-graduate fa-2x text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="quick-actions">
-                    <div class="actions-header">
-                        <h2 class="actions-title">
-                            <i class="fas fa-bolt"></i> Quick Actions
-                        </h2>
-                        <button class="btn-outline">
-                            <i class="fas fa-ellipsis-h"></i> More Actions
-                        </button>
-                    </div>
-                    <div class="actions-grid">
-                        ${data.quickActions.map(action => `
-                            <div class="action-item">
-                                <div class="action-icon">
-                                    <i class="fas ${action.icon}"></i>
-                                </div>
-                                <div class="action-name">${action.name}</div>
-                                <div class="action-desc">${action.desc}</div>
+                <!-- Row 3: Recent Activity and System Alerts -->
+                <div class="row">
+                    <!-- Recent Activity -->
+                    <div class="col-lg-8 mb-4">
+                        <div class="activity-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="mb-0 fw-bold">
+                                    <i class="fas fa-history me-2 text-gold"></i>
+                                    Recent System Activity
+                                </h5>
+                                <button class="btn btn-sm btn-gold" onclick="viewAllActivity()">
+                                    <i class="fas fa-list me-1"></i> View All
+                                </button>
                             </div>
-                        `).join('')}
+                            <div class="activity-list">
+                                <!-- Activity items will be added here -->
+                                ${data.activities.map(activity => `
+                                    <div class="activity-item d-flex align-items-start gap-3 py-3 border-bottom">
+                                        <div class="activity-icon">
+                                            <i class="fas ${activity.icon}"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <p class="mb-0 fw-medium">${activity.text}</p>
+                                            <small class="text-muted">${activity.time}</small>
+                                        </div>
+                                        <span class="badge bg-${getActivityTypeColor(activity.type)}">
+                                            ${activity.type}
+                                        </span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- System Alerts -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="activity-card border-top border-warning border-top-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="mb-0 fw-bold">
+                                    <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+                                    System Alerts
+                                </h5>
+                                <button class="btn btn-sm btn-outline-warning" onclick="dismissAllAlerts()">
+                                    <i class="fas fa-check me-1"></i> Dismiss All
+                                </button>
+                            </div>
+                            <div class="d-flex flex-column gap-3">
+                                <!-- Alert items will be added here -->
+                                ${data.alerts.map(alert => `
+                                    <div class="alert alert-${alert.level} alert-dismissible fade show mb-2" role="alert">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-exclamation-circle me-2"></i>
+                                            <div class="flex-grow-1">
+                                                <p class="mb-0">${alert.text}</p>
+                                                <small>${alert.time}</small>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-warning w-100" onclick="showSystemHealth()">
+                                    <i class="fas fa-heartbeat me-2"></i> View System Health
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="recent-activity" style="margin-top: 30px;">
-                    <div class="activity-header">
-                        <h2 class="activity-title">
-                            <i class="fas fa-history"></i> Recent Activity
-                        </h2>
-                        <button class="btn-outline">
-                            <i class="fas fa-list"></i> View All
-                        </button>
-                    </div>
-                    <div class="activity-list">
-                        ${data.activities.map(activity => `
-                            <div class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas ${activity.icon}"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <div class="activity-text">${activity.text}</div>
-                                    <div class="activity-time">${activity.time}</div>
-                                </div>
+                <!-- Row 4: Branch Distribution -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="activity-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="mb-0 fw-bold">
+                                    <i class="fas fa-map-marker-alt me-2 text-gold"></i>
+                                    Student Distribution by Branch
+                                </h5>
+                                <button class="btn btn-sm btn-gold" onclick="navigateTo('student-management')">
+                                    <i class="fas fa-filter me-1"></i> Filter by Branch
+                                </button>
                             </div>
-                        `).join('')}
+                            <div class="row">
+                                <!-- Branch cards will be added here -->
+                                ${Object.entries(data.stats.branchStudents).map(([branch, count]) => `
+                                    <div class="col-md-4 mb-3">
+                                        <div class="quick-stat">
+                                            <div class="flex-grow-1">
+                                                <h4 class="fw-bold mb-0">${count.toLocaleString()}</h4>
+                                                <small class="text-muted">${branch}</small>
+                                            </div>
+                                            <i class="fas fa-school fa-2x text-primary"></i>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
+            
+            // Initialize charts after content is loaded
+            setTimeout(setupCharts, 100);
         }
 
-        // Mobile sidebar toggle
-        function setupMobileSidebar() {
-            const sidebarCollapse = document.getElementById('sidebarCollapse');
-            const sidebar = document.getElementById('sidebar');
+        // ========== SETUP CHARTS ==========
+        // This function creates the charts and graphs
+        function setupCharts() {
+            // Student Distribution Chart (Pie/Doughnut Chart)
+            const ctx = document.getElementById('studentDistributionChart');
+            if (ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Nursery', 'Primary', 'Secondary'],
+                        datasets: [{
+                            data: [
+                                superAdminData.stats.nurseryStudents, 
+                                superAdminData.stats.primaryStudents, 
+                                superAdminData.stats.secondaryStudents
+                            ],
+                            backgroundColor: [
+                                'rgba(156, 39, 176, 0.8)',
+                                'rgba(33, 150, 243, 0.8)',
+                                'rgba(76, 175, 80, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(156, 39, 176, 1)',
+                                'rgba(33, 150, 243, 1)',
+                                'rgba(76, 175, 80, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // ========== SETUP MOBILE MENU ==========
+        // This function handles the mobile menu toggle
+        function setupMobileMenu() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
             
-            sidebarCollapse.addEventListener('click', function() {
+            // Toggle sidebar when menu button is clicked
+            mobileMenuToggle.addEventListener('click', function() {
                 sidebar.classList.toggle('active');
+                sidebarOverlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
             });
+            
+            // Close sidebar when overlay is clicked
+            sidebarOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                sidebarOverlay.style.display = 'none';
+            });
+            
+            // Close sidebar when window is resized to desktop size
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 767) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.style.display = 'none';
+                }
+            });
+        }
+
+        // ========== HELPER FUNCTIONS ==========
+        // Get color for activity type badges
+        function getActivityTypeColor(type) {
+            const colors = {
+                'student': 'info',
+                'teacher': 'success',
+                'admin': 'primary',
+                'system': 'secondary',
+                'finance': 'warning',
+                'security': 'dark'
+            };
+            return colors[type] || 'secondary';
+        }
+
+        // ========== NAVIGATION FUNCTIONS ==========
+        // Navigate to different pages
+        function navigateTo(page) {
+            alert(`Navigating to ${page.replace('-', ' ').toUpperCase()} page...\n\nThis would load the ${page.replace('-', ' ')} interface.`);
+            
+            // Close mobile sidebar if open
+            if (window.innerWidth <= 767) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.getElementById('sidebarOverlay').style.display = 'none';
+            }
+        }
+
+        // ========== ACTION FUNCTIONS ==========
+        // These functions handle various actions in the dashboard
+        
+        function showAddUser() {
+            alert('Add New User Modal\n\nThis would open a form to add new students, teachers, or admins.');
+        }
+
+        function showSystemSettings() {
+            alert('System Settings Panel\n\nConfigure system-wide settings, academic calendar, grading system, etc.');
+        }
+
+        function showAnnouncements() {
+            alert('Announcements Panel\n\nSend system-wide announcements to all users.');
+        }
+
+        function showStaffDetails() {
+            const stats = superAdminData.stats;
+            alert(`Staff Breakdown:\n\nTeaching Staff: ${stats.teachingStaff}\nNon-Teaching Staff: ${stats.nonTeachingStaff}\nTotal: ${stats.totalStaff}\n\nClick "View Details" to see individual staff members with their roles and assignments.`);
+        }
+
+        function showSystemHealth() {
+            alert('System Health Dashboard\n\nView server status, storage usage, performance metrics, and system logs.');
+        }
+
+        function viewAllActivity() {
+            alert('View All Activity\n\nComplete activity log with filtering and search options.');
+        }
+
+        function dismissAllAlerts() {
+            alert('All system alerts have been dismissed.');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to sign out?')) {
+                alert('You have been successfully signed out.');
+                // In real implementation, this would redirect to login page
+                // window.location.href = 'login.html';
+            }
         }
     </script>
 </body>

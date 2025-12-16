@@ -7,6 +7,7 @@
     <title>Nexis - Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <style>
         :root {
             --navy-blue: #0a1a3a;
@@ -37,7 +38,7 @@
             display: flex;
             width: 100%;
             max-width: 1100px;
-            height: 600px; /* Slightly taller */
+            height: 650px; /* Slightly taller */
             background: white;
             border-radius: 16px;
             overflow: hidden;
@@ -391,7 +392,7 @@
                         <i class="fas fa-sync-alt benefit-icon"></i>
                         <span>Automated Workflows & Processes</span>
                     </div>
-                    <div class="benefit-item">
+                    <div class="benefit-item mb-3">
                         <i class="fas fa-users benefit-icon"></i>
                         <span>Integrated Communication Tools</span>
                     </div>
@@ -482,5 +483,22 @@
 
     
 </body>
+<script>
+    // Password toggle
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+</script>
 
 </html>
