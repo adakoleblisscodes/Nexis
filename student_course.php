@@ -856,7 +856,7 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-chart-bar"></i>
-                        <span>Grades & Reports</span>
+                        <span>Result Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -864,20 +864,13 @@
                         <i class="fas fa-calendar-alt"></i>
                         <span>Timetable</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <span>Classmates</span>
-                    </a>
-                </li>
             </ul>
         </div>
         
         <div class="sidebar-footer">
             <div class="student-info">
                 <p class="student-id" id="studentId">STU-2023-00124</p>
-                <p class="student-class" id="studentLevel">Grade 10A - Secondary</p>
+                <p class="student-class" id="studentLevel">ss1 - Secondary</p>
             </div>
         </div>
     </nav>
@@ -891,14 +884,14 @@
         
         <div class="top-header">
             <div class="page-title">
-                <h1>My Courses & Subjects</h1>
+                <h1>My Subjects</h1>
                 <p class="welcome-text" id="welcomeText">Access your course materials and track your progress</p>
             </div>
             <div class="user-info">
                 <div class="student-avatar">AJ</div>
                 <div class="student-details">
                     <h3 id="studentName">Alex Johnson</h3>
-                    <p id="studentDetails">Grade 10A | Science Stream</p>
+                    <p id="studentDetails">SS1 | Science Stream</p>
                 </div>
             </div>
         </div>

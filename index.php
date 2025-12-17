@@ -340,20 +340,26 @@
         
         /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                height: auto;
-                max-width: 450px;
-            }
-            
-            .brand-panel, .login-panel {
-                padding: 25px;
-            }
-            
-            .brand-header {
-                margin-bottom: 25px;
-            }
-        }
+    .container {
+        flex-direction: column;
+        height: auto;
+        max-width: 450px;
+    }
+
+    .brand-panel {
+        display: none; /* Hide the left panel on mobile */
+    }
+
+    .login-panel {
+        flex: 1 1 100%; /* Full width on mobile */
+        padding: 25px;
+    }
+
+    .brand-header {
+        margin-bottom: 25px;
+    }
+}
+
     </style>
 </head>
 

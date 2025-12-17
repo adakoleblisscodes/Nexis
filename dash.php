@@ -3,1000 +3,1048 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexis LMS - Super Admin Dashboard</title>
+    <title>Nexis LMS - Complete Role-Based System</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for graphs -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ========== CSS VARIABLES ========== */
         :root {
+            --superadmin-gold: #d4af37;
+            --hos-blue: #2196f3;
+            --classteacher-green: #4caf50;
+            --subjectteacher-purple: #9c27b0;
             --navy-blue: #0a1a3a;
-            --navy-light: #1a2a4a;
-            --gold: #d4af37;
-            --gold-light: #f4d03f;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-            --info: #17a2b8;
-            --gray-light: #f8fafc;
         }
         
-        /* ========== BASE STYLES ========== */
         body {
-            background-color: var(--gray-light);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            overflow-x: hidden;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        /* ========== SIDEBAR ========== */
+        /* ====== SIDEBAR ====== */
         .sidebar {
             width: 280px;
-            background: linear-gradient(180deg, var(--navy-blue) 0%, var(--navy-light) 100%);
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             height: 100vh;
             position: fixed;
             left: 0;
             top: 0;
-            z-index: 1050;
             padding: 0;
             box-shadow: 3px 0 15px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            transition: transform 0.3s ease;
+            z-index: 1000;
         }
         
+        /* FIXED LOGO CONTAINER */
         .logo-container {
-            padding: 25px 20px;
+            padding: 15px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(0, 0, 0, 0.1);
         }
         
-        .platform-name {
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
-            margin: 0;
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .admin-badge {
-            background: var(--gold);
-            color: var(--navy-blue);
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+        .logo-img-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .brand-text {
+            flex: 1;
+        }
+        
+        .brand-text h6 {
+            margin: 0;
+            color: white;
             font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
             margin-left: 10px;
         }
         
+        .role-badge.superadmin { background: var(--superadmin-gold); color: #000; }
+        .role-badge.hos { background: var(--hos-blue); color: white; }
+        .role-badge.classteacher { background: var(--classteacher-green); color: white; }
+        .role-badge.subjectteacher { background: var(--subjectteacher-purple); color: white; }
+        
+        .nav-section {
+            padding: 15px 20px 5px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
         .nav-link {
-            color: rgba(255, 255, 255, 0.85);
-            padding: 12px 15px;
-            border-radius: 8px;
-            border-left: 3px solid transparent;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            border-radius: 0;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
         }
         
         .nav-link:hover, .nav-link.active {
-            background: rgba(212, 175, 55, 0.15);
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--superadmin-gold);
             color: white;
-            border-left: 3px solid var(--gold);
         }
         
         .nav-link i {
             width: 20px;
             text-align: center;
-            color: var(--gold);
+            margin-right: 10px;
         }
         
-        .sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.1);
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-        }
-        
-        /* ========== MAIN CONTENT ========== */
+        /* ====== MAIN CONTENT ====== */
         .main-content {
             margin-left: 280px;
-            padding: 25px;
+            padding: 20px;
             min-height: 100vh;
-            background-color: var(--gray-light);
-            transition: margin-left 0.3s ease;
         }
         
-        /* ========== TOP HEADER ========== */
-        .top-header {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 25px;
-        }
-        
-        /* ========== DASHBOARD CARDS ========== */
+        /* ====== DASHBOARD CARDS ====== */
         .dashboard-card {
             background: white;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             height: 100%;
-            border: 1px solid #e9ecef;
+            border-top: 4px solid;
+            transition: transform 0.3s;
         }
         
         .dashboard-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
         
-        .card-icon-container {
+        .dashboard-card.superadmin { border-color: var(--superadmin-gold); }
+        .dashboard-card.hos { border-color: var(--hos-blue); }
+        .dashboard-card.classteacher { border-color: var(--classteacher-green); }
+        .dashboard-card.subjectteacher { border-color: var(--subjectteacher-purple); }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .stat-number.superadmin { color: var(--superadmin-gold); }
+        .stat-number.hos { color: var(--hos-blue); }
+        .stat-number.classteacher { color: var(--classteacher-green); }
+        .stat-number.subjectteacher { color: var(--subjectteacher-purple); }
+        
+        /* ====== FEATURE SECTIONS ====== */
+        .feature-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .feature-item {
+            padding: 15px;
+            border-left: 4px solid;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .feature-item.allowed {
+            border-left-color: var(--classteacher-green);
+            background: rgba(76, 175, 80, 0.05);
+        }
+        
+        .feature-item.denied {
+            border-left-color: #dc3545;
+            background: rgba(220, 53, 69, 0.05);
+            opacity: 0.6;
+        }
+        
+        /* ====== ROLE SWITCHER ====== */
+        .role-switcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .role-switcher-btn {
             width: 60px;
             height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--navy-blue), var(--navy-light));
+            border-radius: 50%;
+            background: var(--navy-blue);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
         }
         
-        .card-value {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--navy-blue);
-            line-height: 1;
-            margin-bottom: 5px;
+        .role-switcher-btn:hover {
+            transform: scale(1.1);
+            background: var(--superadmin-gold);
         }
         
-        .card-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        /* ========== LEVEL CARDS ========== */
-        .level-card {
+        .role-options {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid;
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            min-width: 250px;
+            display: none;
         }
         
-        .nursery-card { border-left-color: #9c27b0; }
-        .primary-card { border-left-color: #2196f3; }
-        .secondary-card { border-left-color: #4caf50; }
-        
-        /* ========== ACTIVITY CARDS ========== */
-        .activity-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            height: 100%;
+        .role-options.show {
+            display: block;
         }
         
-        /* ========== QUICK STATS ========== */
-        .quick-stat {
+        .role-option {
+            padding: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+        
+        .role-option:hover {
             background: #f8f9fa;
+        }
+        
+        .role-option.active {
+            background: #e3f2fd;
+        }
+        
+        .role-icon {
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
-            border-left: 4px solid var(--gold);
-        }
-        
-        /* ========== BUTTONS ========== */
-        .btn-gold {
-            background: var(--gold);
-            border-color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            font-weight: 600;
+            font-size: 1.2rem;
         }
         
-        .btn-gold:hover {
-            background: #b8941f;
-            border-color: #b8941f;
-            color: white;
-        }
+        .role-icon.superadmin { background: var(--superadmin-gold); }
+        .role-icon.hos { background: var(--hos-blue); }
+        .role-icon.classteacher { background: var(--classteacher-green); }
+        .role-icon.subjectteacher { background: var(--subjectteacher-purple); }
         
-        /* ========== MOBILE MENU TOGGLE ========== */
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--navy-blue);
-        }
-        
-        /* ========== MOBILE OVERLAY (for sidebar on mobile) ========== */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1040;
-        }
-        
-        /* ========== RESPONSIVE STYLES ========== */
-        /* Large screens (desktops) */
-        @media (min-width: 1200px) {
-            .col-xl-2-4 {
-                flex: 0 0 20%;
-                max-width: 20%;
-            }
-        }
-        
-        /* Medium screens (tablets) */
-        @media (max-width: 1199px) and (min-width: 768px) {
-            .dashboard-card .card-value {
-                font-size: 1.8rem;
-            }
-        }
-        
-        /* Small screens (mobile) */
-        @media (max-width: 767px) {
-            /* Hide sidebar by default on mobile */
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 992px) {
             .sidebar {
                 transform: translateX(-100%);
-                width: 280px;
             }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            /* Show mobile menu toggle button */
-            .mobile-menu-toggle {
-                display: block;
-            }
-            
-            /* Adjust main content for mobile */
             .main-content {
                 margin-left: 0;
-                padding: 15px;
-            }
-            
-            /* Adjust top header for mobile */
-            .top-header {
-                padding: 15px;
-                flex-direction: column;
-                align-items: flex-start !important;
-            }
-            
-            .top-header > div {
-                width: 100%;
-            }
-            
-            .header-right {
-                margin-top: 15px;
-                justify-content: space-between;
-            }
-            
-            /* Adjust card values for mobile */
-            .card-value {
-                font-size: 1.8rem;
-            }
-            
-            /* Make charts and cards stack vertically */
-            .chart-card canvas {
-                max-height: 200px;
-            }
-            
-            /* Adjust activity items for mobile */
-            .activity-item {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .activity-item .badge {
-                align-self: flex-start;
             }
         }
-        
-        /* Extra small screens (very small mobile) */
-        @media (max-width: 575px) {
-            .main-content {
-                padding: 10px;
-            }
-            
-            .top-header {
-                padding: 12px;
-            }
-            
-            .card-value {
-                font-size: 1.6rem;
-            }
-            
-            .platform-name {
-                font-size: 20px;
-            }
-            
-            .dashboard-card .btn {
-                width: 100%;
-            }
-        }
-        
-        /* Custom scrollbar */
-        .sidebar::-webkit-scrollbar {
-            width: 5px;
-        }
-        
-        .sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sidebar::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 10px;
-        }
-        
-        /* Text colors for easy reading */
-        .text-gold { color: var(--gold); }
-        .text-purple { color: #9c27b0; }
-        .text-success { color: var(--success); }
-        .text-warning { color: var(--warning); }
-        .text-danger { color: var(--danger); }
-        .text-info { color: var(--info); }
     </style>
 </head>
 <body>
-    <!-- Mobile Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    
-    <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column">
-        <!-- Logo Section -->
-        <div class="logo-container">
-            <div class="d-flex align-items-center">
-                <!-- Logo (using placeholder, replace with your logo) -->
-                <div class="user-avatar me-3">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h3 class="platform-name">Nexis <span class="admin-badge">SUPER ADMIN</span></h3>
-            </div>
-        </div>
-        
-        <!-- Navigation Menu -->
-        <div class="nav flex-column flex-grow-1 mt-3" id="sidebarNav">
-            <!-- Navigation items will be loaded here by JavaScript -->
-        </div>
-        
-        <!-- User Profile & Logout -->
-        <div class="sidebar-footer">
-            <div class="d-flex align-items-center gap-3 mb-3">
-                <div class="user-avatar" id="userAvatar">SA</div>
-                <div>
-                    <p class="mb-0 fw-bold" id="userName">Super Administrator</p>
-                    <small class="text-gold" id="userEmail">admin@nexis.edu</small>
-                </div>
-            </div>
-            <button class="btn btn-outline-light w-100" onclick="logout()">
-                <i class="fas fa-sign-out-alt me-2"></i> Sign Out
-            </button>
-        </div>
-    </div>
+    <?php include 'includes/sidebar.php'; ?>
     
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Top Header -->
-        <div class="top-header d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <!-- Mobile Menu Toggle Button -->
-                <button class="mobile-menu-toggle me-3" id="mobileMenuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div>
-                    <h1 class="h4 mb-1 fw-bold" id="dashboardTitle">Super Admin Dashboard</h1>
-                    <p class="text-muted mb-0" id="welcomeMessage">System Overview & Control Panel</p>
-                </div>
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 id="dashboardTitle" class="h3 mb-1 fw-bold">Super Admin Dashboard</h3>
+                <p id="welcomeMessage" class="text-muted mb-0">Full system control & management</p>
             </div>
-            
-            <div class="d-flex align-items-center gap-3 header-right">
-                <!-- Notifications -->
-                <button class="notification-btn position-relative">
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary">
                     <i class="fas fa-bell"></i>
-                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">3</span>
+                    <span class="badge bg-danger ms-1">3</span>
                 </button>
-                
-                <!-- Quick Actions Dropdown -->
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-cog me-2"></i> <span class="d-none d-md-inline">Quick Actions</span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" onclick="showAddUser()"><i class="fas fa-user-plus me-2"></i>Add New User</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="showSystemSettings()"><i class="fas fa-cogs me-2"></i>System Settings</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="showAnnouncements()"><i class="fas fa-bullhorn me-2"></i>Send Announcement</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                    </ul>
-                </div>
+                <button class="btn btn-outline-secondary" onclick="showProfile()">
+                    <i class="fas fa-user me-2"></i>Profile
+                </button>
             </div>
         </div>
         
         <!-- Dashboard Content -->
         <div id="dashboardContent">
-            <!-- Content will be loaded here by JavaScript -->
+            <!-- Content loaded dynamically -->
+        </div>
+    </div>
+    
+    <!-- Role Switcher -->
+    <div class="role-switcher">
+        <button class="role-switcher-btn" onclick="toggleRoleSwitcher()">
+            <i class="fas fa-users"></i>
+        </button>
+        <div class="role-options" id="roleOptions">
+            <div class="role-option active" onclick="switchRole('superadmin')">
+                <div class="role-icon superadmin">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0">Super Administrator</h6>
+                    <small class="text-muted">Full system control</small>
+                </div>
+            </div>
+            <div class="role-option" onclick="switchRole('hos')">
+                <div class="role-icon hos">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0">Head of School</h6>
+                    <small class="text-muted">Branch-specific control</small>
+                </div>
+            </div>
+            <div class="role-option" onclick="switchRole('classteacher')">
+                <div class="role-icon classteacher">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0">Class Teacher</h6>
+                    <small class="text-muted">Class-specific control</small>
+                </div>
+            </div>
+            <div class="role-option" onclick="switchRole('subjectteacher')">
+                <div class="role-icon subjectteacher">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0">Subject Teacher</h6>
+                    <small class="text-muted">Subject-specific control</small>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS Bundle -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // ========== SUPER ADMIN DATA ==========
-        // This is where all the dashboard information is stored
-        const superAdminData = {
-            title: 'Super Admin Dashboard',
-            welcome: 'System Overview & Control Panel',
-            userName: 'Super Administrator',
-            userEmail: 'admin@nexis.edu',
-            userAvatar: 'SA',
-            
-            // Navigation Items (left sidebar menu)
-            navItems: [
-                { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true },
-                { icon: 'fa-user-graduate', name: 'Student Management' },
-                { icon: 'fa-chalkboard-teacher', name: 'Teacher Management' },
-                { icon: 'fa-user-tie', name: 'Admin Management' },
-                { icon: 'fa-school', name: 'School Setup & Configuration' },
-                { icon: 'fa-shield-alt', name: 'User Roles & Permissions' },
-                { icon: 'fa-money-check-alt', name: 'Payments History' },
-                { icon: 'fa-cogs', name: 'System Settings' },
-                { icon: 'fa-bell', name: 'Notifications' }
-            ],
-            
-            // Dashboard Statistics (shown in the cards)
-            stats: {
-                totalStudents: 2375,
-                totalTeachers: 125,
-                totalStaff: 185,
-                totalSchools: 3,
-                activeStudents: 2250,
-                inactiveStudents: 75,
-                suspendedStudents: 50,
-                graduatedStudents: 0,
-                
-                // Level-wise distribution
-                nurseryStudents: 245,
-                primaryStudents: 856,
-                secondaryStudents: 1274,
-                
-                // Staff breakdown
-                teachingStaff: 125,
-                nonTeachingStaff: 60,
-                
-                // Branch distribution
-                branchStudents: {
-                    'Main Campus': 1200,
-                    'North Branch': 750,
-                    'West Branch': 425
-                }
+        // ==================== ROLE DATA ====================
+        const roles = {
+            superadmin: {
+                id: 'superadmin',
+                name: 'Super Administrator',
+                badgeClass: 'superadmin',
+                user: { name: 'Super Admin', email: 'admin@nexis.edu', avatar: 'SA', branch: 'All Branches' },
+                stats: { students: 2375, teachers: 125, staff: 185, schools: 3 },
+                navigation: [
+                    { section: 'Overview', items: [
+                        { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true }
+                    ]},
+                    { section: 'Management', items: [
+                        { icon: 'fa-user-graduate', name: 'Student Management' },
+                        { icon: 'fa-chalkboard-teacher', name: 'Teacher Management' },
+                        { icon: 'fa-user-tie', name: 'Admin Management' },
+                        { icon: 'fa-school', name: 'School Setup' }
+                    ]},
+                    { section: 'System', items: [
+                        { icon: 'fa-shield-alt', name: 'Roles & Permissions' },
+                        { icon: 'fa-money-check-alt', name: 'Payments History' },
+                        { icon: 'fa-cogs', name: 'System Settings' },
+                        { icon: 'fa-bell', name: 'Notifications' }
+                    ]}
+                ]
             },
             
-            // Recent Activities (shown in activity log)
-            activities: [
-                { icon: 'fa-user-plus', text: 'New student enrolled in Primary School', time: '10 min ago', type: 'student' },
-                { icon: 'fa-chalkboard-teacher', text: 'Teacher assigned to Grade 10 Mathematics', time: '30 min ago', type: 'teacher' },
-                { icon: 'fa-user-tie', text: 'New admin account created for North Branch', time: '1 hour ago', type: 'admin' },
-                { icon: 'fa-school', text: 'New academic year configured for Secondary', time: '2 hours ago', type: 'system' },
-                { icon: 'fa-money-check-alt', text: 'Monthly fee report generated', time: '4 hours ago', type: 'finance' },
-                { icon: 'fa-cog', text: 'System settings updated', time: '1 day ago', type: 'system' },
-                { icon: 'fa-shield-alt', text: 'Security audit completed', time: '2 days ago', type: 'security' }
-            ],
+            hos: {
+                id: 'hos',
+                name: 'Head of School',
+                badgeClass: 'hos',
+                user: { name: 'Dr. Adebayo Johnson', email: 'hos.main@nexis.edu', avatar: 'AJ', branch: 'Main Campus' },
+                stats: { students: 1200, teachers: 45, classes: 36, attendance: 94.5 },
+                navigation: [
+                    { section: 'Overview', items: [
+                        { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true }
+                    ]},
+                    { section: 'Management', items: [
+                        { icon: 'fa-user-graduate', name: 'Student Management' },
+                        { icon: 'fa-chalkboard-teacher', name: 'Teacher Management' }
+                    ]},
+                    { section: 'Academic', items: [
+                        { icon: 'fa-chalkboard', name: 'Class Management' },
+                        { icon: 'fa-book', name: 'Subject Management' },
+                        { icon: 'fa-clipboard-check', name: 'Attendance' },
+                        { icon: 'fa-chart-line', name: 'Results Management' }
+                    ]},
+                    { section: 'Communication', items: [
+                        { icon: 'fa-users', name: 'Parents' }
+                    ]},
+                    { section: 'Reports', items: [
+                        { icon: 'fa-chart-bar', name: 'Reports' }
+                    ]},
+                    { section: 'System', items: [
+                        { icon: 'fa-bell', name: 'Notifications' },
+                        { icon: 'fa-bullhorn', name: 'Announcements' }
+                    ]}
+                ]
+            },
             
-            // System Alerts (shown in alerts section)
-            alerts: [
-                { level: 'warning', text: 'Low storage space on server (15% remaining)', time: '2 hours ago' },
-                { level: 'info', text: '5 teacher accounts pending approval', time: '1 day ago' },
-                { level: 'warning', text: 'High server load detected', time: '2 days ago' }
-            ]
+            classteacher: {
+                id: 'classteacher',
+                name: 'Class Teacher',
+                badgeClass: 'classteacher',
+                user: { name: 'Mrs. Chidinma Okoro', email: 'c.okoro@nexis.edu', avatar: 'CO', branch: 'Main Campus', class: 'Grade 10A' },
+                stats: { students: 42, attendance: 96.2, male: 22, female: 20, average: 72.5 },
+                navigation: [
+                    { section: 'Overview', items: [
+                        { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true }
+                    ]},
+                    { section: 'My Class', items: [
+                        { icon: 'fa-users', name: 'My Class' },
+                        { icon: 'fa-user-graduate', name: 'Students' },
+                        { icon: 'fa-clipboard-check', name: 'Attendance' },
+                        { icon: 'fa-chart-line', name: 'Results' }
+                    ]},
+                    { section: 'Communication', items: [
+                        { icon: 'fa-user-friends', name: 'Parents' }
+                    ]},
+                    { section: 'System', items: [
+                        { icon: 'fa-bell', name: 'Notifications' }
+                    ]}
+                ]
+            },
+            
+            subjectteacher: {
+                id: 'subjectteacher',
+                name: 'Subject Teacher',
+                badgeClass: 'subjectteacher',
+                user: { name: 'Mr. Segun Adeyemi', email: 's.adeyemi@nexis.edu', avatar: 'SA', branch: 'Main Campus', subjects: ['Mathematics', 'Physics'] },
+                stats: { subjects: 3, classes: 8, students: 185, submission: 60, avgScore: 68.3 },
+                navigation: [
+                    { section: 'Overview', items: [
+                        { icon: 'fa-tachometer-alt', name: 'Dashboard', active: true }
+                    ]},
+                    { section: 'Teaching', items: [
+                        { icon: 'fa-book-open', name: 'My Subjects' },
+                        { icon: 'fa-user-graduate', name: 'My Students' },
+                        { icon: 'fa-chart-line', name: 'Results' },
+                        { icon: 'fa-tasks', name: 'Assignments' }
+                    ]},
+                    { section: 'System', items: [
+                        { icon: 'fa-bell', name: 'Notifications' }
+                    ]}
+                ]
+            }
         };
 
-        // ========== INITIALIZE DASHBOARD ==========
-        // This runs when the page is fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            loadDashboard();      // Load all dashboard content
-            setupCharts();        // Setup charts and graphs
-            setupMobileMenu();    // Setup mobile menu functionality
-            
-            // Update dashboard every 30 seconds (optional)
-            // setInterval(updateDashboard, 30000);
-        });
+        // ==================== APPLICATION STATE ====================
+        let currentRole = 'superadmin';
 
-        // ========== LOAD DASHBOARD ==========
-        // This function loads all the dashboard content
+        // ==================== INITIALIZE DASHBOARD ====================
         function loadDashboard() {
-            const data = superAdminData;
+            const role = roles[currentRole];
             
-            // Update header information
-            document.getElementById('dashboardTitle').textContent = data.title;
-            document.getElementById('welcomeMessage').textContent = data.welcome;
-            document.getElementById('userName').textContent = data.userName;
-            document.getElementById('userEmail').textContent = data.userEmail;
-            document.getElementById('userAvatar').textContent = data.userAvatar;
+            // Update Header
+            document.getElementById('dashboardTitle').textContent = `${role.name} Dashboard`;
+            document.getElementById('welcomeMessage').textContent = getWelcomeMessage(role);
+            document.getElementById('userName').textContent = role.user.name;
+            document.getElementById('userEmail').textContent = role.user.email;
+            document.getElementById('userAvatar').textContent = role.user.avatar;
+            document.getElementById('roleBadge').className = `role-badge ${role.badgeClass}`;
+            document.getElementById('roleBadge').textContent = role.name.toUpperCase();
             
-            // Load navigation menu
-            loadNavigation(data.navItems);
+            // Navigation is provided by includes/sidebar.php (static links)
             
-            // Load main dashboard content
-            loadDashboardContent(data);
+            // Load Content
+            loadDashboardContent(role);
+            
+            // Update Role Switcher
+            updateRoleSwitcher();
         }
 
-        // ========== LOAD NAVIGATION MENU ==========
-        // This creates the sidebar navigation menu
-        function loadNavigation(navItems) {
-            const sidebarNav = document.getElementById('sidebarNav');
-            let navHTML = '';
+        // Static sidebar is included server-side (includes/sidebar.php)
+
+        function loadDashboardContent(role) {
+            const content = document.getElementById('dashboardContent');
             
-            // Create HTML for each navigation item
-            navItems.forEach(item => {
-                navHTML += `
-                    <div class="nav-item">
-                        <a class="nav-link ${item.active ? 'active' : ''}" href="#" onclick="navigateTo('${item.name.toLowerCase().replace(/ /g, '-')}')">
-                            <i class="fas ${item.icon}"></i>
-                            <span>${item.name}</span>
-                        </a>
-                    </div>
-                `;
-            });
-            
-            sidebarNav.innerHTML = navHTML;
+            switch(role.id) {
+                case 'superadmin':
+                    content.innerHTML = renderSuperAdminDashboard(role);
+                    break;
+                case 'hos':
+                    content.innerHTML = renderHOSDashboard(role);
+                    break;
+                case 'classteacher':
+                    content.innerHTML = renderClassTeacherDashboard(role);
+                    break;
+                case 'subjectteacher':
+                    content.innerHTML = renderSubjectTeacherDashboard(role);
+                    break;
+            }
         }
 
-        // ========== LOAD DASHBOARD CONTENT ==========
-        // This creates the main dashboard content
-        function loadDashboardContent(data) {
-            const dashboardContent = document.getElementById('dashboardContent');
-            
-            // Create HTML for the dashboard
-            dashboardContent.innerHTML = `
-                <!-- Row 1: Quick Stats Cards -->
+        // ==================== DASHBOARD RENDERERS ====================
+        function renderSuperAdminDashboard(role) {
+            return `
+                <!-- Stats Cards -->
                 <div class="row mb-4">
-                    <!-- Card 1: Total Students -->
-                    <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
-                        <div class="dashboard-card">
-                            <div class="card-body">
-                                <div class="card-icon-container">
-                                    <i class="fas fa-user-graduate text-white"></i>
-                                </div>
-                                <h2 class="card-value">${data.stats.totalStudents.toLocaleString()}</h2>
-                                <h5 class="card-title mb-2">Total Students</h5>
-                                <p class="card-label">Across all branches & levels</p>
-                                <button class="btn btn-sm btn-gold mt-2" onclick="navigateTo('student-management')">
-                                    View Details <i class="fas fa-arrow-right ms-1"></i>
-                                </button>
-                            </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card superadmin">
+                            <div class="stat-number superadmin">${role.stats.students.toLocaleString()}</div>
+                            <h6 class="text-muted">Total Students</h6>
+                            <p class="small mb-0">All branches combined</p>
                         </div>
                     </div>
-                    
-                    <!-- Card 2: Teaching Staff -->
-                    <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
-                        <div class="dashboard-card">
-                            <div class="card-body">
-                                <div class="card-icon-container">
-                                    <i class="fas fa-chalkboard-teacher text-white"></i>
-                                </div>
-                                <h2 class="card-value">${data.stats.totalTeachers}</h2>
-                                <h5 class="card-title mb-2">Teaching Staff</h5>
-                                <p class="card-label">Active teaching personnel</p>
-                                <button class="btn btn-sm btn-gold mt-2" onclick="navigateTo('teacher-management')">
-                                    Manage Teachers <i class="fas fa-arrow-right ms-1"></i>
-                                </button>
-                            </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card superadmin">
+                            <div class="stat-number superadmin">${role.stats.teachers}</div>
+                            <h6 class="text-muted">Teaching Staff</h6>
+                            <p class="small mb-0">Across all schools</p>
                         </div>
                     </div>
-                    
-                    <!-- Card 3: Total Staff -->
-                    <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
-                        <div class="dashboard-card">
-                            <div class="card-body">
-                                <div class="card-icon-container">
-                                    <i class="fas fa-users text-white"></i>
-                                </div>
-                                <h2 class="card-value">${data.stats.totalStaff}</h2>
-                                <h5 class="card-title mb-2">Total Staff</h5>
-                                <p class="card-label">Teaching + Non-teaching staff</p>
-                                <button class="btn btn-sm btn-gold mt-2" onclick="showStaffDetails()">
-                                    View Breakdown <i class="fas fa-arrow-right ms-1"></i>
-                                </button>
-                            </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card superadmin">
+                            <div class="stat-number superadmin">${role.stats.staff}</div>
+                            <h6 class="text-muted">Total Staff</h6>
+                            <p class="small mb-0">Teaching + Non-teaching</p>
                         </div>
                     </div>
-                    
-                    <!-- Card 4: Schools/Branches -->
-                    <div class="col-xl-3 col-lg-6 col-md-6 mb-3">
-                        <div class="dashboard-card">
-                            <div class="card-body">
-                                <div class="card-icon-container">
-                                    <i class="fas fa-school text-white"></i>
-                                </div>
-                                <h2 class="card-value">${data.stats.totalSchools}</h2>
-                                <h5 class="card-title mb-2">Schools/Branches</h5>
-                                <p class="card-label">Managed institutions</p>
-                                <button class="btn btn-sm btn-gold mt-2" onclick="navigateTo('school-setup-configuration')">
-                                    Configure <i class="fas fa-arrow-right ms-1"></i>
-                                </button>
-                            </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card superadmin">
+                            <div class="stat-number superadmin">${role.stats.schools}</div>
+                            <h6 class="text-muted">Schools/Branches</h6>
+                            <p class="small mb-0">Managed institutions</p>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Row 2: Charts and Student Status -->
-                <div class="row mb-4">
-                    <!-- Student Distribution Chart -->
-                    <div class="col-lg-8 mb-4">
-                        <div class="activity-card">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="mb-0 fw-bold">
-                                    <i class="fas fa-chart-pie me-2 text-gold"></i>
-                                    Student Distribution by Level
-                                </h5>
-                                <div class="btn-group">
-                                    <button class="btn btn-sm btn-outline-secondary active">Levels</button>
-                                    <button class="btn btn-sm btn-outline-secondary">Branches</button>
-                                    <button class="btn btn-sm btn-outline-secondary">Status</button>
-                                </div>
+
+                <!-- Features Section -->
+                <div class="feature-section">
+                    <h4 class="fw-bold mb-4 text-superadmin">
+                        <i class="fas fa-crown me-2"></i>Super Admin Features
+                    </h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">🎓 Student Management</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View all students across all branches
                             </div>
-                            <div class="row">
-                                <!-- Chart Canvas -->
-                                <div class="col-md-8">
-                                    <canvas id="studentDistributionChart" height="250"></canvas>
-                                </div>
-                                
-                                <!-- Level Distribution Cards -->
-                                <div class="col-md-4">
-                                    <div class="d-flex flex-column gap-3">
-                                        <!-- Nursery Card -->
-                                        <div class="level-card nursery-card">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 class="fw-bold mb-0">${data.stats.nurseryStudents}</h4>
-                                                    <small class="text-muted">Nursery Students</small>
-                                                </div>
-                                                <i class="fas fa-baby fa-2x text-purple"></i>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Primary Card -->
-                                        <div class="level-card primary-card">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 class="fw-bold mb-0">${data.stats.primaryStudents}</h4>
-                                                    <small class="text-muted">Primary Students</small>
-                                                </div>
-                                                <i class="fas fa-child fa-2x text-primary"></i>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Secondary Card -->
-                                        <div class="level-card secondary-card">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 class="fw-bold mb-0">${data.stats.secondaryStudents}</h4>
-                                                    <small class="text-muted">Secondary Students</small>
-                                                </div>
-                                                <i class="fas fa-graduation-cap fa-2x text-success"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Add/Edit/Remove student records
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Transfer students between branches
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Filter by branch, level, class, gender
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">👨‍🏫 Teacher & Admin Management</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Manage all teachers across branches
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Create/Edit/Delete Admin accounts
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Assign roles (Principal, Bursar, etc.)
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Reset passwords for any user
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Student Status Overview -->
-                    <div class="col-lg-4 mb-4">
-                        <div class="activity-card">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="mb-0 fw-bold">
-                                    <i class="fas fa-chart-bar me-2 text-gold"></i>
-                                    Student Status Overview
-                                </h5>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6 class="fw-bold mb-3">🏫 School Setup & Configuration</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Create new schools/branches
                             </div>
-                            <div class="d-flex flex-column gap-3">
-                                <!-- Active Students -->
-                                <div class="quick-stat">
-                                    <div class="flex-grow-1">
-                                        <h4 class="fw-bold mb-0">${data.stats.activeStudents}</h4>
-                                        <small class="text-muted">Active Students</small>
-                                    </div>
-                                    <i class="fas fa-user-check fa-2x text-success"></i>
-                                </div>
-                                
-                                <!-- Inactive Students -->
-                                <div class="quick-stat">
-                                    <div class="flex-grow-1">
-                                        <h4 class="fw-bold mb-0">${data.stats.inactiveStudents}</h4>
-                                        <small class="text-muted">Inactive Students</small>
-                                    </div>
-                                    <i class="fas fa-user-clock fa-2x text-warning"></i>
-                                </div>
-                                
-                                <!-- Suspended Students -->
-                                <div class="quick-stat">
-                                    <div class="flex-grow-1">
-                                        <h4 class="fw-bold mb-0">${data.stats.suspendedStudents}</h4>
-                                        <small class="text-muted">Suspended Students</small>
-                                    </div>
-                                    <i class="fas fa-user-slash fa-2x text-danger"></i>
-                                </div>
-                                
-                                <!-- Graduated Students -->
-                                <div class="quick-stat">
-                                    <div class="flex-grow-1">
-                                        <h4 class="fw-bold mb-0">${data.stats.graduatedStudents}</h4>
-                                        <small class="text-muted">Graduated Students</small>
-                                    </div>
-                                    <i class="fas fa-user-graduate fa-2x text-info"></i>
-                                </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Set academic calendar & grading system
                             </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Row 3: Recent Activity and System Alerts -->
-                <div class="row">
-                    <!-- Recent Activity -->
-                    <div class="col-lg-8 mb-4">
-                        <div class="activity-card">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="mb-0 fw-bold">
-                                    <i class="fas fa-history me-2 text-gold"></i>
-                                    Recent System Activity
-                                </h5>
-                                <button class="btn btn-sm btn-gold" onclick="viewAllActivity()">
-                                    <i class="fas fa-list me-1"></i> View All
-                                </button>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Lock/unlock school sessions
                             </div>
-                            <div class="activity-list">
-                                <!-- Activity items will be added here -->
-                                ${data.activities.map(activity => `
-                                    <div class="activity-item d-flex align-items-start gap-3 py-3 border-bottom">
-                                        <div class="activity-icon">
-                                            <i class="fas ${activity.icon}"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="mb-0 fw-medium">${activity.text}</p>
-                                            <small class="text-muted">${activity.time}</small>
-                                        </div>
-                                        <span class="badge bg-${getActivityTypeColor(activity.type)}">
-                                            ${activity.type}
-                                        </span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- System Alerts -->
-                    <div class="col-lg-4 mb-4">
-                        <div class="activity-card border-top border-warning border-top-4">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="mb-0 fw-bold">
-                                    <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
-                                    System Alerts
-                                </h5>
-                                <button class="btn btn-sm btn-outline-warning" onclick="dismissAllAlerts()">
-                                    <i class="fas fa-check me-1"></i> Dismiss All
-                                </button>
-                            </div>
-                            <div class="d-flex flex-column gap-3">
-                                <!-- Alert items will be added here -->
-                                ${data.alerts.map(alert => `
-                                    <div class="alert alert-${alert.level} alert-dismissible fade show mb-2" role="alert">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-exclamation-circle me-2"></i>
-                                            <div class="flex-grow-1">
-                                                <p class="mb-0">${alert.text}</p>
-                                                <small>${alert.time}</small>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <div class="mt-3">
-                                <button class="btn btn-warning w-100" onclick="showSystemHealth()">
-                                    <i class="fas fa-heartbeat me-2"></i> View System Health
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Row 4: Branch Distribution -->
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <div class="activity-card">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="mb-0 fw-bold">
-                                    <i class="fas fa-map-marker-alt me-2 text-gold"></i>
-                                    Student Distribution by Branch
-                                </h5>
-                                <button class="btn btn-sm btn-gold" onclick="navigateTo('student-management')">
-                                    <i class="fas fa-filter me-1"></i> Filter by Branch
-                                </button>
-                            </div>
-                            <div class="row">
-                                <!-- Branch cards will be added here -->
-                                ${Object.entries(data.stats.branchStudents).map(([branch, count]) => `
-                                    <div class="col-md-4 mb-3">
-                                        <div class="quick-stat">
-                                            <div class="flex-grow-1">
-                                                <h4 class="fw-bold mb-0">${count.toLocaleString()}</h4>
-                                                <small class="text-muted">${branch}</small>
-                                            </div>
-                                            <i class="fas fa-school fa-2x text-primary"></i>
-                                        </div>
-                                    </div>
-                                `).join('')}
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Push system-wide announcements
                             </div>
                         </div>
                     </div>
                 </div>
             `;
-            
-            // Initialize charts after content is loaded
-            setTimeout(setupCharts, 100);
         }
 
-        // ========== SETUP CHARTS ==========
-        // This function creates the charts and graphs
-        function setupCharts() {
-            // Student Distribution Chart (Pie/Doughnut Chart)
-            const ctx = document.getElementById('studentDistributionChart');
-            if (ctx) {
-                new Chart(ctx.getContext('2d'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Nursery', 'Primary', 'Secondary'],
-                        datasets: [{
-                            data: [
-                                superAdminData.stats.nurseryStudents, 
-                                superAdminData.stats.primaryStudents, 
-                                superAdminData.stats.secondaryStudents
-                            ],
-                            backgroundColor: [
-                                'rgba(156, 39, 176, 0.8)',
-                                'rgba(33, 150, 243, 0.8)',
-                                'rgba(76, 175, 80, 0.8)'
-                            ],
-                            borderColor: [
-                                'rgba(156, 39, 176, 1)',
-                                'rgba(33, 150, 243, 1)',
-                                'rgba(76, 175, 80, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }
-                });
+        function renderHOSDashboard(role) {
+            return `
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card hos">
+                            <div class="stat-number hos">${role.stats.students.toLocaleString()}</div>
+                            <h6 class="text-muted">Total Students</h6>
+                            <p class="small mb-0">${role.user.branch} only</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card hos">
+                            <div class="stat-number hos">${role.stats.teachers}</div>
+                            <h6 class="text-muted">Teaching Staff</h6>
+                            <p class="small mb-0">${role.user.branch} only</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card hos">
+                            <div class="stat-number hos">${role.stats.classes}</div>
+                            <h6 class="text-muted">Total Classes</h6>
+                            <p class="small mb-0">${role.user.branch}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card hos">
+                            <div class="stat-number hos">${role.stats.attendance}%</div>
+                            <h6 class="text-muted">Attendance Rate</h6>
+                            <p class="small mb-0">Current term average</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="feature-section">
+                    <h4 class="fw-bold mb-4 text-primary">
+                        <i class="fas fa-user-tie me-2"></i>Head of School Features - ${role.user.branch}
+                    </h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">🎓 Branch Student Management</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View all students in ${role.user.branch}
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Add new students to branch
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Edit student records in branch
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Transfer students within branch only
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">👨‍🏫 Branch Teacher Management</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View all teachers in ${role.user.branch}
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Add teachers to branch
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Assign teachers to classes/subjects
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Suspend teachers in branch
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">📚 Academic Management</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Create and manage classes
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Manage subjects for branch
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Monitor attendance reports
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Approve/publish results for branch
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">🚫 Restrictions</h6>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                Cannot access other branches
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                Cannot manage admins or roles
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                Cannot change system-wide settings
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                Cannot enable/disable modules
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderClassTeacherDashboard(role) {
+            return `
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card classteacher">
+                            <div class="stat-number classteacher">${role.stats.students}</div>
+                            <h6 class="text-muted">Total Students</h6>
+                            <p class="small mb-0">${role.user.class}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card classteacher">
+                            <div class="stat-number classteacher">${role.stats.attendance}%</div>
+                            <h6 class="text-muted">Attendance Rate</h6>
+                            <p class="small mb-0">Current week</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card classteacher">
+                            <div class="stat-number classteacher">${role.stats.male}/${role.stats.female}</div>
+                            <h6 class="text-muted">Male/Female</h6>
+                            <p class="small mb-0">Gender distribution</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card classteacher">
+                            <div class="stat-number classteacher">${role.stats.average}%</div>
+                            <h6 class="text-muted">Class Average</h6>
+                            <p class="small mb-0">Last assessment</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="feature-section">
+                    <h4 class="fw-bold mb-4 text-success">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>Class Teacher Features - ${role.user.class}
+                    </h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">👨‍🏫 My Class Management</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View students in ${role.user.class}
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Mark daily attendance for class
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Edit attendance (within timeframe)
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View attendance reports
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">📊 Results & Academic</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Enter continuous assessment (CA)
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Enter exam scores for class
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View class result summaries
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View full academic history
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">👨‍👩‍👧 Parent Communication</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View parent/guardian contact details
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Send notifications/messages to parents
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Update student remarks/comments
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">🚫 Restrictions</h6>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                No access to other classes
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                Cannot add or remove students
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                No teacher or subject management
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                No result approval or publishing
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSubjectTeacherDashboard(role) {
+            return `
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card subjectteacher">
+                            <div class="stat-number subjectteacher">${role.stats.subjects}</div>
+                            <h6 class="text-muted">Subjects Assigned</h6>
+                            <p class="small mb-0">${role.user.subjects.join(', ')}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card subjectteacher">
+                            <div class="stat-number subjectteacher">${role.stats.classes}</div>
+                            <h6 class="text-muted">Classes Assigned</h6>
+                            <p class="small mb-0">Currently teaching</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card subjectteacher">
+                            <div class="stat-number subjectteacher">${role.stats.students}</div>
+                            <h6 class="text-muted">Total Students</h6>
+                            <p class="small mb-0">Taught across all classes</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="dashboard-card subjectteacher">
+                            <div class="stat-number subjectteacher">${role.stats.submission}%</div>
+                            <h6 class="text-muted">Results Submitted</h6>
+                            <p class="small mb-0">Current term progress</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="feature-section">
+                    <h4 class="fw-bold mb-4 text-purple">
+                        <i class="fas fa-book me-2"></i>Subject Teacher Features
+                    </h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">📚 My Subjects & Classes</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View assigned subjects: ${role.user.subjects.join(', ')}
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View assigned classes (${role.stats.classes} classes)
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View students in assigned classes
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View academic records (read-only)
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">📊 Results Management</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Enter CA (Continuous Assessment) scores
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Enter exam scores for subjects
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Edit scores before submission deadline
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Submit results for approval
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">📝 Teaching Activities</h6>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Create assignments for students
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Grade assignments and provide feedback
+                            </div>
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Upload teaching materials
+                            </div>
+                            ${role.stats.avgScore ? `
+                            <div class="feature-item allowed">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View average performance per subject
+                            </div>` : ''}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">🚫 Restrictions</h6>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                No student creation or editing
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                No class or subject creation
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                No teacher management
+                            </div>
+                            <div class="feature-item denied">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                No result approval or publishing
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==================== HELPER FUNCTIONS ====================
+        function getWelcomeMessage(role) {
+            switch(role.id) {
+                case 'superadmin': return 'Full system control & management';
+                case 'hos': return `Managing ${role.user.branch} only`;
+                case 'classteacher': return `Managing ${role.user.class} only`;
+                case 'subjectteacher': return `Teaching ${role.user.subjects.join(', ')}`;
+                default: return '';
             }
         }
 
-        // ========== SETUP MOBILE MENU ==========
-        // This function handles the mobile menu toggle
-        function setupMobileMenu() {
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const sidebar = document.querySelector('.sidebar');
-            const sidebarOverlay = document.getElementById('sidebarOverlay');
-            
-            // Toggle sidebar when menu button is clicked
-            mobileMenuToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('active');
-                sidebarOverlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-            });
-            
-            // Close sidebar when overlay is clicked
-            sidebarOverlay.addEventListener('click', function() {
-                sidebar.classList.remove('active');
-                sidebarOverlay.style.display = 'none';
-            });
-            
-            // Close sidebar when window is resized to desktop size
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 767) {
-                    sidebar.classList.remove('active');
-                    sidebarOverlay.style.display = 'none';
+        function switchRole(roleId) {
+            currentRole = roleId;
+            loadDashboard();
+            toggleRoleSwitcher();
+        }
+
+        function toggleRoleSwitcher() {
+            document.getElementById('roleOptions').classList.toggle('show');
+        }
+
+        function updateRoleSwitcher() {
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.onclick.toString().includes(currentRole)) {
+                    option.classList.add('active');
                 }
             });
         }
 
-        // ========== HELPER FUNCTIONS ==========
-        // Get color for activity type badges
-        function getActivityTypeColor(type) {
-            const colors = {
-                'student': 'info',
-                'teacher': 'success',
-                'admin': 'primary',
-                'system': 'secondary',
-                'finance': 'warning',
-                'security': 'dark'
-            };
-            return colors[type] || 'secondary';
-        }
-
-        // ========== NAVIGATION FUNCTIONS ==========
-        // Navigate to different pages
         function navigateTo(page) {
-            alert(`Navigating to ${page.replace('-', ' ').toUpperCase()} page...\n\nThis would load the ${page.replace('-', ' ')} interface.`);
-            
-            // Close mobile sidebar if open
-            if (window.innerWidth <= 767) {
-                document.querySelector('.sidebar').classList.remove('active');
-                document.getElementById('sidebarOverlay').style.display = 'none';
-            }
+            alert(`[${roles[currentRole].name}] Navigating to: ${page}`);
         }
 
-        // ========== ACTION FUNCTIONS ==========
-        // These functions handle various actions in the dashboard
-        
-        function showAddUser() {
-            alert('Add New User Modal\n\nThis would open a form to add new students, teachers, or admins.');
-        }
-
-        function showSystemSettings() {
-            alert('System Settings Panel\n\nConfigure system-wide settings, academic calendar, grading system, etc.');
-        }
-
-        function showAnnouncements() {
-            alert('Announcements Panel\n\nSend system-wide announcements to all users.');
-        }
-
-        function showStaffDetails() {
-            const stats = superAdminData.stats;
-            alert(`Staff Breakdown:\n\nTeaching Staff: ${stats.teachingStaff}\nNon-Teaching Staff: ${stats.nonTeachingStaff}\nTotal: ${stats.totalStaff}\n\nClick "View Details" to see individual staff members with their roles and assignments.`);
-        }
-
-        function showSystemHealth() {
-            alert('System Health Dashboard\n\nView server status, storage usage, performance metrics, and system logs.');
-        }
-
-        function viewAllActivity() {
-            alert('View All Activity\n\nComplete activity log with filtering and search options.');
-        }
-
-        function dismissAllAlerts() {
-            alert('All system alerts have been dismissed.');
+        function showProfile() {
+            const role = roles[currentRole];
+            alert(`Profile Information:\n\nName: ${role.user.name}\nRole: ${role.name}\nEmail: ${role.user.email}\nBranch: ${role.user.branch}`);
         }
 
         function logout() {
             if (confirm('Are you sure you want to sign out?')) {
-                alert('You have been successfully signed out.');
-                // In real implementation, this would redirect to login page
-                // window.location.href = 'login.html';
+                alert('You have been signed out successfully.');
+                // In real app: window.location.href = '/login';
             }
         }
+
+        // Close role switcher when clicking outside
+        document.addEventListener('click', function(event) {
+            const switcher = document.getElementById('roleOptions');
+            const button = document.querySelector('.role-switcher-btn');
+            
+            if (!switcher.contains(event.target) && !button.contains(event.target)) {
+                switcher.classList.remove('show');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadDashboard);
     </script>
 </body>
 </html>
