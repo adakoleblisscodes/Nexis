@@ -49,10 +49,10 @@
 </head>
 
 <body>
+    <?php include "includes/sidebar.php"; ?>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <?php include 'includes/sidebar.php'; ?>
+            
 
             <!-- Main Content -->
             <div class="col-md-10 p-4">
@@ -93,8 +93,8 @@
 
                 <!-- Filters -->
                 <div class="row mb-3">
-                    <div class="col-md-3">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Search by name/code">
+                    <div class="col-md-4">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search by name">
                     </div>
                     <div class="col-md-3">
                         <select id="filterClass" class="form-select">
@@ -110,7 +110,7 @@
                             <option>Ms. Mary</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select id="filterStatus" class="form-select">
                             <option value="">Filter by Status</option>
                             <option>Active</option>
@@ -126,7 +126,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Subject Name</th>
-                                <th>Subject Code</th>
                                 <th>Class</th>
                                 <th>Teacher</th>
                                 <th>Status</th>
@@ -137,7 +136,6 @@
                             <tr>
                                 <td>1</td>
                                 <td>Mathematics</td>
-                                <td>MATH101</td>
                                 <td>Class 1</td>
                                 <td>Mr. John</td>
                                 <td><span class="badge badge-active">Active</span></td>
@@ -149,7 +147,6 @@
                             <tr>
                                 <td>2</td>
                                 <td>English</td>
-                                <td>ENG101</td>
                                 <td>Class 1</td>
                                 <td>Ms. Mary</td>
                                 <td><span class="badge badge-active">Active</span></td>
@@ -178,10 +175,6 @@
                         <div class="mb-3">
                             <label class="form-label">Subject Name</label>
                             <input type="text" class="form-control" required id="subjectName">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Subject Code</label>
-                            <input type="text" class="form-control" id="subjectCode">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Assign Class</label>
@@ -227,10 +220,6 @@
                             <input type="text" class="form-control" required id="editSubjectName">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Subject Code</label>
-                            <input type="text" class="form-control" id="editSubjectCode">
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Assign Class</label>
                             <select class="form-select" id="editSubjectClass">
                                 <option>Class 1</option>
@@ -266,7 +255,6 @@
             e.preventDefault();
             const table = document.getElementById('subjectTable');
             const name = document.getElementById('subjectName').value;
-            const code = document.getElementById('subjectCode').value;
             const cls = document.getElementById('subjectClass').value;
             const teacher = document.getElementById('subjectTeacher').value;
             const status = document.getElementById('subjectStatus').value;
@@ -278,7 +266,6 @@
             row.innerHTML = `
                 <td>${rowCount}</td>
                 <td>${name}</td>
-                <td>${code}</td>
                 <td>${cls}</td>
                 <td>${teacher}</td>
                 <td><span class="badge ${badgeClass}">${status}</span></td>
@@ -299,10 +286,9 @@
             const cells = row.cells;
             document.getElementById('editRowIndex').value = row.rowIndex;
             document.getElementById('editSubjectName').value = cells[1].innerText;
-            document.getElementById('editSubjectCode').value = cells[2].innerText;
-            document.getElementById('editSubjectClass').value = cells[3].innerText;
-            document.getElementById('editSubjectTeacher').value = cells[4].innerText;
-            document.getElementById('editSubjectStatus').value = cells[5].innerText;
+            document.getElementById('editSubjectClass').value = cells[2].innerText;
+            document.getElementById('editSubjectTeacher').value = cells[3].innerText;
+            document.getElementById('editSubjectStatus').value = cells[4].innerText;
 
             var editModal = new bootstrap.Modal(document.getElementById('editSubjectModal'));
             editModal.show();
@@ -314,17 +300,15 @@
             const table = document.getElementById('subjectTable');
             const row = table.rows[rowIndex - 1];
             const name = document.getElementById('editSubjectName').value;
-            const code = document.getElementById('editSubjectCode').value;
             const cls = document.getElementById('editSubjectClass').value;
             const teacher = document.getElementById('editSubjectTeacher').value;
             const status = document.getElementById('editSubjectStatus').value;
             const badgeClass = status === 'Active' ? 'badge-active' : 'badge-inactive';
 
             row.cells[1].innerText = name;
-            row.cells[2].innerText = code;
-            row.cells[3].innerText = cls;
-            row.cells[4].innerText = teacher;
-            row.cells[5].innerHTML = `<span class="badge ${badgeClass}">${status}</span>`;
+            row.cells[2].innerText = cls;
+            row.cells[3].innerText = teacher;
+            row.cells[4].innerHTML = `<span class="badge ${badgeClass}">${status}</span>`;
 
             var modalEl = document.getElementById('editSubjectModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
@@ -339,14 +323,13 @@
             }
         }
 
-        // Search & Filter (basic)
+        // Search & Filter
         document.getElementById('searchInput').addEventListener('input', function () {
             const filter = this.value.toLowerCase();
             const table = document.getElementById('subjectTable');
             Array.from(table.rows).forEach(row => {
                 const name = row.cells[1].innerText.toLowerCase();
-                const code = row.cells[2].innerText.toLowerCase();
-                row.style.display = name.includes(filter) || code.includes(filter) ? '' : 'none';
+                row.style.display = name.includes(filter) ? '' : 'none';
             });
         });
 
@@ -362,9 +345,9 @@
 
             const table = document.getElementById('subjectTable');
             Array.from(table.rows).forEach(row => {
-                const cls = row.cells[3].innerText;
-                const teacher = row.cells[4].innerText;
-                const status = row.cells[5].innerText.toLowerCase();
+                const cls = row.cells[2].innerText;
+                const teacher = row.cells[3].innerText;
+                const status = row.cells[4].innerText.toLowerCase();
 
                 let show = true;
                 if (clsFilter && cls !== clsFilter) show = false;

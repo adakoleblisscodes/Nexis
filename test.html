@@ -12,86 +12,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        :root {
-            --superadmin-gold: #FFD700;
-            --sidebar-width: 250px;
-            --sidebar-collapsed-width: 70px;
-            --transition-speed: 0.3s;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: var(--sidebar-width);
-            height: 100vh;
-            background: #2c3e50;
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            transition: transform var(--transition-speed) ease;
-            overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
-
-        .sidebar-header h4 {
-            margin: 0;
-            font-size: 1.2rem;
-            white-space: nowrap;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 12px 20px;
-            border-left: 3px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: white;
-            background: rgba(255, 215, 0, 0.1);
-            border-left-color: var(--superadmin-gold);
-        }
-
-        .nav-link i {
-            width: 20px;
-            margin-right: 10px;
-            text-align: center;
-        }
-
-        /* Mobile Sidebar Close Button (X) - Initially hidden */
-        .sidebar-close {
-            display: none;
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 1002;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 20px;
-            transition: all var(--transition-speed) ease;
-            min-height: 100vh;
-            background: #f8f9fa;
-        }
-
         /* Mobile Header */
         .mobile-header {
             display: none;
@@ -101,38 +21,9 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 999;
+            z-index: 100;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-        }
-
-        .mobile-header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Hamburger Menu Button - Only visible on mobile */
-        .hamburger-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: #2c3e50;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 5px 10px;
-        }
-
-        /* Overlay for mobile sidebar */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 998;
         }
 
         /* Floating Action Button for Mobile */
@@ -151,33 +42,10 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             cursor: pointer;
-            transition: transform 0.2s;
         }
 
         .fab-mobile:hover {
             transform: scale(1.1);
-        }
-
-        /* Dashboard Cards */
-        .dashboard-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            height: 100%;
-            transition: transform 0.2s;
-            border-top: 4px solid var(--superadmin-gold);
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 5px;
         }
 
         /* Table Responsiveness */
@@ -203,13 +71,11 @@
             color: #000;
             font-weight: 600;
             border: none;
-            transition: all 0.2s;
         }
 
         .btn-superadmin:hover {
             background: #c29d30;
             color: #fff;
-            transform: translateY(-2px);
         }
 
         .badge-paid {
@@ -227,57 +93,34 @@
             color: white;
         }
 
-        /* Mobile Action Buttons */
-        .mobile-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
         /* ===========================
            RESPONSIVE MEDIA QUERIES
         ============================*/
 
-        /* Tablet and below - Show mobile header and hamburger */
+        /* Tablet and smaller desktop */
+        @media (max-width: 1200px) {
+            .fab-mobile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        /* Tablet */
         @media (max-width: 992px) {
             .main-content {
-                margin-left: 0;
                 padding-top: 70px;
             }
 
-            /* Hide sidebar by default on mobile */
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            /* Show sidebar when active */
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            /* Show mobile header */
             .mobile-header {
-                display: block;
-            }
-
-            /* Show hamburger button on mobile */
-            .hamburger-btn {
-                display: block;
-            }
-
-            /* Show close button (X) when sidebar is active */
-            .sidebar.active .sidebar-close {
-                display: block;
-            }
-
-            /* Hide desktop header on mobile */
-            .desktop-header {
-                display: none !important;
-            }
-
-            /* Show mobile actions */
-            .mobile-actions {
                 display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-left: 70px;
+            }
+
+            .desktop-header {
+                display: none;
             }
 
             .feature-section {
@@ -288,29 +131,26 @@
                 max-width: 95%;
                 margin: 10px auto;
             }
-
-            /* Show FAB on mobile */
-            .fab-mobile {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
         }
 
-        /* Mobile Landscape and smaller */
+        /* Mobile Landscape */
         @media (max-width: 768px) {
             .main-content {
-                padding: 15px;
+                padding: 10px;
                 padding-top: 70px;
             }
 
+            .mobile-header {
+                padding-left: 70px;
+            }
+
             .dashboard-card {
-                padding: 15px;
-                margin-bottom: 15px;
+                padding: 15px 10px;
+                margin-bottom: 10px;
             }
 
             .stat-number {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
 
             /* Stack filter controls */
@@ -344,16 +184,6 @@
                 right: 20px;
             }
 
-            /* Mobile header buttons */
-            .mobile-header .btn {
-                padding: 6px 10px;
-                font-size: 0.8rem;
-            }
-
-            .mobile-header .btn i {
-                margin-right: 3px;
-            }
-
             /* Modal form improvements */
             .modal-body .mb-3 {
                 margin-bottom: 15px !important;
@@ -373,20 +203,20 @@
         /* Small Mobile */
         @media (max-width: 576px) {
             .main-content {
-                padding: 10px;
+                padding: 8px;
                 padding-top: 70px;
             }
 
             .mobile-header {
-                padding: 12px 15px;
+                padding: 12px 15px 12px 70px;
             }
 
             .dashboard-card {
-                padding: 12px;
+                padding: 12px 8px;
             }
 
             .stat-number {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
 
             h3 {
@@ -429,31 +259,22 @@
                 bottom: 15px;
                 right: 15px;
             }
-
-            /* Hide text on mobile buttons, show only icons */
-            .mobile-header .btn span {
-                display: none;
-            }
-
-            .mobile-header .btn i {
-                margin-right: 0;
-            }
         }
 
         /* Very Small Screens */
         @media (max-width: 400px) {
             .main-content {
-                padding: 8px;
+                padding: 5px;
                 padding-top: 70px;
             }
 
             .dashboard-card {
-                padding: 10px;
+                padding: 10px 5px;
                 border-radius: 8px;
             }
 
             .stat-number {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
 
             .feature-section {
@@ -470,16 +291,6 @@
                 width: 40px;
                 height: 40px;
                 font-size: 0.9rem;
-            }
-
-            /* Reduce mobile header padding */
-            .mobile-header {
-                padding: 10px 12px;
-            }
-
-            .mobile-header h5 {
-                font-size: 1rem;
-                margin-left: 5px;
             }
         }
 
@@ -515,81 +326,14 @@
 
 <body>
 
-    <!-- Overlay for mobile sidebar -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h4>Nexis LMS</h4>
-            <!-- X button (initially hidden) -->
-            <button class="sidebar-close" id="sidebarClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <ul class="nav flex-column" id="sidebarNav">
-            <li class="nav-item">
-                <a class="nav-link" href="dashboard.php">
-                    <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="fees_management.php">
-                    <i class="fas fa-chart-line"></i> <span>Fee Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="student_management.php">
-                    <i class="fas fa-user-graduate"></i> <span>Students Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="subject_management.php">
-                    <i class="fas fa-book"></i> <span>Subject Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="results_management.php">
-                    <i class="fas fa-chart-bar"></i> <span>Results Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="staff_management.php">
-                    <i class="fas fa-chalkboard-teacher"></i> <span>Staff Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="class_management.php">
-                    <i class="fas fa-school"></i> <span>Class Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-cog"></i> <span>Settings</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <?php include './includes/sidebar.php'; ?>
 
     <!-- Mobile Header -->
     <div class="mobile-header">
-        <div class="mobile-header-content">
-            <!-- Hamburger Button (only shows on mobile) -->
-            <button class="hamburger-btn" id="hamburgerBtn">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h5 class="mb-0 ms-3 flex-grow-1">Fee Management</h5>
-            <div class="mobile-actions">
-                <button class="btn btn-superadmin btn-sm" data-bs-toggle="modal" data-bs-target="#feeSetupModal">
-                    <i class="fas fa-cogs"></i>
-                    <span class="d-none d-sm-inline"> Setup</span>
-                </button>
-                <button class="btn btn-superadmin btn-sm" data-bs-toggle="modal" data-bs-target="#addPaymentModal">
-                    <i class="fas fa-plus"></i>
-                    <span class="d-none d-sm-inline"> Add</span>
-                </button>
-            </div>
-        </div>
+        <h5 class="mb-0">Fee Management</h5>
+        <button class="btn btn-superadmin btn-sm" data-bs-toggle="modal" data-bs-target="#feeSetupModal">
+            <i class="fas fa-cogs me-1"></i> Setup
+        </button>
     </div>
 
     <!-- Main Content -->
@@ -614,30 +358,30 @@
 
         <!-- Cards -->
         <div class="row mb-4">
-            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="dashboard-card">
-                    <div class="stat-number">₦12.5M</div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="dashboard-card superadmin">
+                    <div class="stat-number superadmin">₦12.5M</div>
                     <p class="text-muted mb-0">Total Paid</p>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="dashboard-card">
-                    <div class="stat-number">125</div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="dashboard-card superadmin">
+                    <div class="stat-number superadmin">125</div>
                     <p class="text-muted mb-0">Students Owing</p>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="dashboard-card">
-                    <div class="stat-number">38</div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="dashboard-card superadmin">
+                    <div class="stat-number superadmin">38</div>
                     <p class="text-muted mb-0">Part Payments</p>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="dashboard-card">
-                    <div class="stat-number">₦15M</div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="dashboard-card superadmin">
+                    <div class="stat-number superadmin">₦15M</div>
                     <p class="text-muted mb-0">Expected Fees</p>
                 </div>
             </div>
@@ -950,62 +694,25 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/scripts.js"></script>
     <script>
-        // DOM Elements
-        const sidebar = document.getElementById('sidebar');
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const sidebarClose = document.getElementById('sidebarClose');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-        // Open sidebar when hamburger is clicked
-        hamburgerBtn.addEventListener('click', function() {
-            sidebar.classList.add('active');
-            sidebarOverlay.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        });
-
-        // Close sidebar when X is clicked
-        sidebarClose.addEventListener('click', function() {
-            sidebar.classList.remove('active');
-            sidebarOverlay.style.display = 'none';
-            document.body.style.overflow = ''; // Restore scrolling
-        });
-
-        // Close sidebar when clicking overlay
-        sidebarOverlay.addEventListener('click', function() {
-            sidebar.classList.remove('active');
-            sidebarOverlay.style.display = 'none';
-            document.body.style.overflow = ''; // Restore scrolling
-        });
-
-        // Close sidebar when pressing Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-                sidebarOverlay.style.display = 'none';
-                document.body.style.overflow = ''; // Restore scrolling
-            }
-        });
-
-        // Handle window resize
-        function handleResize() {
-            if (window.innerWidth > 992) {
-                // Desktop - hide overlay and ensure sidebar is visible
-                sidebar.classList.remove('active');
-                sidebarOverlay.style.display = 'none';
-                document.body.style.overflow = ''; // Restore scrolling
-            }
-        }
-
-        // Initial check on page load
-        window.addEventListener('load', handleResize);
-        
-        // Check on window resize
-        window.addEventListener('resize', handleResize);
-
-        // Initialize the page
+        // Initialize the page after scripts.js loads
         document.addEventListener('DOMContentLoaded', function () {
+            // First, check if the scripts.js file is loaded properly
             console.log('Fee Management page loaded');
+
+            // Wait a bit to ensure scripts.js is loaded
+            setTimeout(function () {
+                // Check if loadDashboard function exists
+                if (typeof loadDashboard === 'function') {
+                    console.log('loadDashboard function found, calling it...');
+                    loadDashboard();
+                } else {
+                    console.error('loadDashboard function not found in scripts.js');
+                    // Fallback: manually set up sidebar
+                    setupSidebarManually();
+                }
+            }, 100);
 
             // Set active link for fee management
             setTimeout(function () {
@@ -1018,6 +725,39 @@
                 });
             }, 300);
         });
+
+        // Fallback function if scripts.js doesn't load
+        function setupSidebarManually() {
+            const sidebarNav = document.getElementById('sidebarNav');
+            if (sidebarNav) {
+                const role = 'superadmin'; // Default role
+                const navigation = [
+                    { name: 'Dashboard', icon: 'fa-tachometer-alt', href: 'dashboard.php' },
+                    { name: 'Fee Management', icon: 'fa-chart-line', href: 'fees_management.php' },
+                    { name: 'Students Management', icon: 'fa-user-graduate', href: 'student_management.php' },
+                    { name: 'Subject Management', icon: 'fa-book', href: 'subject_management.php' },
+                    { name: 'Results Management', icon: 'fa-chart-bar', href: 'results_management.php' },
+                    { name: 'Staff Management', icon: 'fa-chalkboard-teacher', href: 'staff_management.php' },
+                    { name: 'Class Management', icon: 'fa-school', href: 'class_management.php' },
+                    { name: 'Settings', icon: 'fa-cog', href: '#' }
+                ];
+
+                let html = '';
+                navigation.forEach(item => {
+                    const active = item.name === 'Fee Management' ? ' active' : '';
+                    html += `
+                    <li class="nav-item">
+                        <a class="nav-link${active}" href="${item.href}">
+                            <i class="fas ${item.icon}"></i> ${item.name}
+                        </a>
+                    </li>
+                `;
+                });
+
+                sidebarNav.innerHTML = html;
+                console.log('Sidebar manually set up');
+            }
+        }
 
         // Existing functions
         function toggleOtherPayment() {
