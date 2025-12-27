@@ -1,10 +1,25 @@
-/* CSS Variables */
 :root {
+    --superadmin-gold: #d4af37;
+    --hos-blue: #2196f3;
+    --classteacher-green: #4caf50;
+    --subjectteacher-purple: #9c27b0;
     --navy-blue: #0a1a3a;
     --navy-blue-light: #1a2a4a;
     --gold-primary: #d4af37;
     --gold-secondary: #f4d03f;
     --sidebar-width: 250px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+    overflow-x: hidden;
 }
 
 /* ====== SIDEBAR ====== */
@@ -46,17 +61,9 @@
 }
 
 .platform-name {
-    font-size: 28px; /* Large text for "Nexis" */
-    font-weight: 800;
+    font-size: 18px;
+    font-weight: 700;
     margin-bottom: 2px;
-    letter-spacing: 0.5px;
-    color: white;
-}
-
-.tagline {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.7);
-    letter-spacing: 0.3px;
 }
 
 .sidebar-nav {
@@ -74,40 +81,26 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 14px 20px;
-    color: rgba(255, 255, 255, 0.85);
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     border-left: 3px solid transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 14px;
 }
 
 .nav-link i {
-    width: 22px; /* Increased icon width */
+    width: 20px;
     text-align: center;
-    font-size: 18px;
-    transition: transform 0.3s;
+    font-size: 16px;
 }
 
-/* Active state (Dashboard) */
+.nav-link:hover,
 .nav-link.active {
-    background: rgba(212, 175, 55, 0.25);
+    background: rgba(212, 175, 55, 0.15);
     color: white;
     border-left: 3px solid var(--gold-primary);
-    padding-left: 22px;
-    font-weight: 600;
-}
-
-.nav-link:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    padding-left: 22px;
-}
-
-.nav-link:hover i {
-    transform: scale(1.1);
 }
 
 .sidebar-footer {
@@ -121,39 +114,34 @@
 }
 
 .user-id {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.9);
-    letter-spacing: 0.5px;
-    font-family: monospace;
-    margin-bottom: 5px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .user-role {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--gold-secondary);
 }
 
 .logout-btn {
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     background: rgba(255, 255, 255, 0.1);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
+    border-radius: 4px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
     font-size: 14px;
-    transition: all 0.3s;
-    font-weight: 500;
+    transition: background 0.3s;
 }
 
 .logout-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-1px);
 }
 
 /* Mobile Toggle */
@@ -162,24 +150,19 @@
     position: fixed;
     top: 15px;
     left: 15px;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     background: var(--navy-blue);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     z-index: 1060;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     align-items: center;
     justify-content: center;
     font-size: 18px;
     transition: all 0.3s;
-}
-
-#sidebarToggle:hover {
-    background: var(--navy-blue-light);
-    transform: translateY(-2px);
 }
 
 #sidebarToggle i {
@@ -209,7 +192,7 @@
     opacity: 1;
 }
 
-/* Main content adjustment for sidebar */
+/* ====== MAIN CONTENT ====== */
 .main-content {
     margin-left: 0;
     padding: 20px;
@@ -218,20 +201,258 @@
     position: relative;
 }
 
+/* ====== DASHBOARD CARDS ====== */
+.dashboard-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    border-top: 3px solid;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-card.superadmin {
+    border-color: var(--superadmin-gold);
+}
+
+.dashboard-card.hos {
+    border-color: var(--hos-blue);
+}
+
+.dashboard-card.classteacher {
+    border-color: var(--classteacher-green);
+}
+
+.dashboard-card.subjectteacher {
+    border-color: var(--subjectteacher-purple);
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.stat-number.superadmin {
+    color: var(--superadmin-gold);
+}
+
+.stat-number.hos {
+    color: var(--hos-blue);
+}
+
+.stat-number.classteacher {
+    color: var(--classteacher-green);
+}
+
+.stat-number.subjectteacher {
+    color: var(--subjectteacher-purple);
+}
+
+.card-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.card-label {
+    font-size: 13px;
+    color: #666;
+    margin-top: auto;
+}
+
+/* ====== PAGE CONTENT ====== */
+.activity-feed {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ====== CHARTS ====== */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 250px;
+}
+
+/* ====== ROLE SWITCHER ====== */
+.role-switcher {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.role-switcher-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--navy-blue);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
+
+.role-switcher-btn:hover {
+    transform: scale(1.1);
+}
+
+.role-options {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    min-width: 250px;
+    display: none;
+}
+
+.role-options.show {
+    display: block;
+}
+
+.role-option {
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+    transition: background 0.3s;
+}
+
+.role-option:hover {
+    background: #f8f9fa;
+}
+
+.role-option.active {
+    background: #f0f0f0;
+}
+
+.role-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.role-icon.superadmin {
+    background: var(--superadmin-gold);
+}
+
+.role-icon.hos {
+    background: var(--hos-blue);
+}
+
+.role-icon.classteacher {
+    background: var(--classteacher-green);
+}
+
+.role-icon.subjectteacher {
+    background: var(--subjectteacher-purple);
+}
+
+/* ====== ACTIVITY FEED ====== */
+.compact-activities {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.activity-item-compact {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.activity-item-compact:last-child {
+    border-bottom: none;
+}
+
+.activity-icon-compact {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.activity-icon-compact.admin {
+    background: var(--superadmin-gold);
+}
+
+.activity-icon-compact.hos {
+    background: var(--hos-blue);
+}
+
+.activity-icon-compact.teacher {
+    background: var(--classteacher-green);
+}
+
+.activity-icon-compact.system {
+    background: #6c757d;
+}
+
+.activity-content-compact {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-title-compact {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+.activity-details-compact {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.activity-time-compact {
+    font-size: 11px;
+    color: #999;
+}
+
 /* ====== RESPONSIVE ====== */
 @media (min-width: 993px) {
     #sidebar {
         transform: translateX(0);
     }
-    
+
     #sidebarToggle {
         display: none !important;
     }
-    
+
     #sidebarOverlay {
         display: none !important;
     }
-    
+
     .main-content {
         margin-left: var(--sidebar-width);
     }
@@ -241,64 +462,26 @@
     #sidebarToggle {
         display: flex;
     }
-    
+
     .main-content {
-        padding-top: 80px;
-    }
-    
-    .platform-name {
-        font-size: 24px;
-    }
-    
-    .nav-link {
-        font-size: 15px;
-        padding: 13px 20px;
+        padding-top: 70px;
     }
 }
 
-@media (max-width: 768px) {
-    .platform-name {
-        font-size: 22px;
-    }
-    
-    .sidebar-header {
-        padding: 15px;
-    }
-    
-    .nav-link {
-        padding: 12px 15px;
-        font-size: 14px;
-    }
-    
-    .nav-link i {
-        font-size: 16px;
-        width: 20px;
-    }
-    
-    .user-id {
-        font-size: 13px;
-    }
-    
-    .user-role {
-        font-size: 14px;
-    }
+/* Loading skeleton */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 8px;
 }
 
-@media (max-width: 576px) {
-    .platform-name {
-        font-size: 20px;
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
     }
-    
-    .sidebar-header {
-        padding: 12px;
-    }
-    
-    .logo-img {
-        width: 35px;
-        height: 35px;
-    }
-    
-    .tagline {
-        font-size: 10px;
+
+    100% {
+        background-position: -200% 0;
     }
 }
