@@ -18,7 +18,7 @@ $userId = $_SESSION['user_id'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexis SMS - Dashboard</title>
+    <title>Nexis SMS - <?php echo ucfirst(str_replace('teacher', ' Teacher', $currentRole)); ?> Dashboard</title>
     
     <!-- External Resources -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,8 +26,6 @@ $userId = $_SESSION['user_id'];
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        /* Copy ALL your CSS from the original HTML file here */
-        /* Make sure you include ALL CSS styles from your original HTML */
         :root {
             --superadmin-gold: #d4af37;
             --hos-blue: #2196f3;
@@ -313,6 +311,162 @@ $userId = $_SESSION['user_id'];
             height: 250px;
         }
 
+        /* ====== ROLE SWITCHER ====== */
+        .role-switcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .role-switcher-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--navy-blue);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .role-switcher-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .role-options {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            padding: 10px;
+            min-width: 250px;
+            display: none;
+        }
+
+        .role-options.show {
+            display: block;
+        }
+
+        .role-option {
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+            transition: background 0.3s;
+        }
+
+        .role-option:hover {
+            background: #f8f9fa;
+        }
+
+        .role-option.active {
+            background: #f0f0f0;
+        }
+
+        .role-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .role-icon.superadmin {
+            background: var(--superadmin-gold);
+        }
+
+        .role-icon.hos {
+            background: var(--hos-blue);
+        }
+
+        .role-icon.classteacher {
+            background: var(--classteacher-green);
+        }
+
+        .role-icon.subjectteacher {
+            background: var(--subjectteacher-purple);
+        }
+
+        /* ====== ACTIVITY FEED ====== */
+        .compact-activities {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .activity-item-compact {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-item-compact:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon-compact {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .activity-icon-compact.admin {
+            background: var(--superadmin-gold);
+        }
+
+        .activity-icon-compact.hos {
+            background: var(--hos-blue);
+        }
+
+        .activity-icon-compact.teacher {
+            background: var(--classteacher-green);
+        }
+
+        .activity-icon-compact.system {
+            background: #6c757d;
+        }
+
+        .activity-content-compact {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activity-title-compact {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .activity-details-compact {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .activity-time-compact {
+            font-size: 11px;
+            color: #999;
+        }
+
         /* ====== RESPONSIVE ====== */
         @media (min-width: 993px) {
             #sidebar {
@@ -342,8 +496,18 @@ $userId = $_SESSION['user_id'];
             }
         }
 
-        /* Add ALL the other CSS styles from your original HTML file here */
-        /* Make sure you copy the ENTIRE <style> section from your original HTML */
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body>
@@ -384,26 +548,29 @@ $userId = $_SESSION['user_id'];
                         ['name' => 'Results Management', 'icon' => 'fa-chart-bar', 'href' => 'results_management.php', 'active' => false],
                         ['name' => 'Staff Management', 'icon' => 'fa-chalkboard-teacher', 'href' => 'staff_management.php', 'active' => false],
                         ['name' => 'Class Management', 'icon' => 'fa-school', 'href' => 'class_management.php', 'active' => false],
+                        ['name' => 'Reports', 'icon' => 'fa-file-alt', 'href' => 'reports.php', 'active' => false],
                         ['name' => 'Settings', 'icon' => 'fa-cog', 'href' => 'settings.php', 'active' => false]
                     ];
                 } elseif ($currentRole === 'classteacher') {
                     $navigation = [
                         ['name' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'href' => 'dashboard.php', 'active' => true],
-                        ['name' => 'Fee Management', 'icon' => 'fa-chart-line', 'href' => 'fees_management.php', 'active' => false],
-                        ['name' => 'Students Management', 'icon' => 'fa-user-graduate', 'href' => 'student_management.php', 'active' => false],
-                        ['name' => 'Subject Management', 'icon' => 'fa-book', 'href' => 'subject_management.php', 'active' => false],
-                        ['name' => 'Results Management', 'icon' => 'fa-chart-bar', 'href' => 'results_management.php', 'active' => false],
-                        ['name' => 'Staff Management', 'icon' => 'fa-chalkboard-teacher', 'href' => 'staff_management.php', 'active' => false],
-                        ['name' => 'Class Management', 'icon' => 'fa-school', 'href' => 'class_management.php', 'active' => false],
+                        ['name' => 'My Class', 'icon' => 'fa-users', 'href' => 'my_class.php', 'active' => false],
+                        ['name' => 'Attendance', 'icon' => 'fa-calendar-check', 'href' => 'attendance.php', 'active' => false],
+                        ['name' => 'Student Grades', 'icon' => 'fa-graduation-cap', 'href' => 'student_grades.php', 'active' => false],
+                        ['name' => 'Behavior Reports', 'icon' => 'fa-chart-bar', 'href' => 'behavior_reports.php', 'active' => false],
+                        ['name' => 'Parent Meetings', 'icon' => 'fa-handshake', 'href' => 'parent_meetings.php', 'active' => false],
+                        ['name' => 'Class Schedule', 'icon' => 'fa-calendar-alt', 'href' => 'class_schedule.php', 'active' => false],
                         ['name' => 'Settings', 'icon' => 'fa-cog', 'href' => 'settings.php', 'active' => false]
                     ];
                 } elseif ($currentRole === 'subjectteacher') {
                     $navigation = [
                         ['name' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'href' => 'dashboard.php', 'active' => true],
-                        ['name' => 'Students', 'icon' => 'fa-user-graduate', 'href' => 'student_management.php', 'active' => false],
+                        ['name' => 'My Subjects', 'icon' => 'fa-book', 'href' => 'my_subjects.php', 'active' => false],
                         ['name' => 'Assignments', 'icon' => 'fa-tasks', 'href' => 'assignments.php', 'active' => false],
-                        ['name' => 'Results', 'icon' => 'fa-chart-bar', 'href' => 'results_management.php', 'active' => false],
+                        ['name' => 'Gradebook', 'icon' => 'fa-chart-bar', 'href' => 'gradebook.php', 'active' => false],
+                        ['name' => 'Lesson Plans', 'icon' => 'fa-clipboard-list', 'href' => 'lesson_plans.php', 'active' => false],
                         ['name' => 'Timetable', 'icon' => 'fa-calendar-alt', 'href' => 'timetable.php', 'active' => false],
+                        ['name' => 'Resources', 'icon' => 'fa-folder-open', 'href' => 'resources.php', 'active' => false],
                         ['name' => 'Settings', 'icon' => 'fa-cog', 'href' => 'settings.php', 'active' => false]
                     ];
                 }
@@ -445,14 +612,23 @@ $userId = $_SESSION['user_id'];
         <div class="page-header">
             <div class="d-flex justify-content-between align-items-center flex-wrap">
                 <div class="mb-2 mb-md-0">
-                    <h3 class="h5 mb-1 fw-bold">Dashboard Overview</h3>
+                    <?php
+                    // Role-specific header titles
+                    $roleTitles = [
+                        'superadmin' => 'System Overview Dashboard',
+                        'hos' => 'School Management Dashboard',
+                        'classteacher' => 'Class Management Dashboard',
+                        'subjectteacher' => 'Teaching Dashboard'
+                    ];
+                    ?>
+                    <h3 class="h5 mb-1 fw-bold"><?php echo $roleTitles[$currentRole]; ?></h3>
                     <p class="text-muted mb-0 small" id="welcomeMessage">
                         <?php 
                         $hour = date('H');
                         if ($hour < 12) echo "Good morning";
                         elseif ($hour < 18) echo "Good afternoon";
                         else echo "Good evening";
-                        ?>! Welcome to <?php echo ucfirst(str_replace('teacher', ' Teacher', $currentRole)); ?> Dashboard
+                        ?>, <?php echo $userName; ?>! Welcome to <?php echo ucfirst(str_replace('teacher', ' Teacher', $currentRole)); ?> Dashboard
                     </p>
                 </div>
                 <div class="d-flex gap-2">
@@ -493,7 +669,7 @@ $userId = $_SESSION['user_id'];
             <i class="fas fa-users"></i>
         </button>
         <div class="role-options" id="roleOptions">
-            <div class="role-option active" onclick="switchRole('superadmin')">
+            <div class="role-option <?php echo $currentRole === 'superadmin' ? 'active' : ''; ?>" onclick="switchRole('superadmin')">
                 <div class="role-icon superadmin">
                     <i class="fas fa-crown"></i>
                 </div>
@@ -502,7 +678,7 @@ $userId = $_SESSION['user_id'];
                     <small class="text-muted">Full system control</small>
                 </div>
             </div>
-            <div class="role-option" onclick="switchRole('hos')">
+            <div class="role-option <?php echo $currentRole === 'hos' ? 'active' : ''; ?>" onclick="switchRole('hos')">
                 <div class="role-icon hos">
                     <i class="fas fa-user-tie"></i>
                 </div>
@@ -511,7 +687,7 @@ $userId = $_SESSION['user_id'];
                     <small class="text-muted">Branch-specific control</small>
                 </div>
             </div>
-            <div class="role-option" onclick="switchRole('classteacher')">
+            <div class="role-option <?php echo $currentRole === 'classteacher' ? 'active' : ''; ?>" onclick="switchRole('classteacher')">
                 <div class="role-icon classteacher">
                     <i class="fas fa-chalkboard-teacher"></i>
                 </div>
@@ -520,7 +696,7 @@ $userId = $_SESSION['user_id'];
                     <small class="text-muted">Class-specific control</small>
                 </div>
             </div>
-            <div class="role-option" onclick="switchRole('subjectteacher')">
+            <div class="role-option <?php echo $currentRole === 'subjectteacher' ? 'active' : ''; ?>" onclick="switchRole('subjectteacher')">
                 <div class="role-icon subjectteacher">
                     <i class="fas fa-book"></i>
                 </div>
@@ -562,7 +738,7 @@ $userId = $_SESSION['user_id'];
         const userName = '<?php echo $userName; ?>';
         const userId = '<?php echo $userId; ?>';
 
-        // Application Data
+        // Application Data - Different stats for each role
         const roles = {
             superadmin: {
                 id: 'superadmin',
@@ -587,6 +763,12 @@ $userId = $_SESSION['user_id'];
                     { name: 'Staff Management', icon: 'fa-chalkboard-teacher', active: false, href: 'staff_management.php' },
                     { name: 'Class Management', icon: 'fa-school', active: false, href: 'class_management.php' },
                     { name: 'Settings', icon: 'fa-cog', active: false, href: 'settings.php' }
+                ],
+                cards: [
+                    { title: 'Total Students', icon: 'fa-user-graduate', value: 2375, color: 'superadmin' },
+                    { title: 'Academic Staff', icon: 'fa-chalkboard-teacher', value: 125, color: 'superadmin' },
+                    { title: 'Branches', icon: 'fa-school', value: 3, color: 'superadmin' },
+                    { title: 'Subjects', icon: 'fa-book', value: 45, color: 'superadmin' }
                 ]
             },
             hos: {
@@ -611,7 +793,14 @@ $userId = $_SESSION['user_id'];
                     { name: 'Results Management', icon: 'fa-chart-bar', active: false, href: 'results_management.php' },
                     { name: 'Staff Management', icon: 'fa-chalkboard-teacher', active: false, href: 'staff_management.php' },
                     { name: 'Class Management', icon: 'fa-school', active: false, href: 'class_management.php' },
+                    { name: 'Reports', icon: 'fa-file-alt', active: false, href: 'reports.php' },
                     { name: 'Settings', icon: 'fa-cog', active: false, href: 'settings.php' }
+                ],
+                cards: [
+                    { title: 'Total Students', icon: 'fa-user-graduate', value: 1200, color: 'hos' },
+                    { title: 'Teaching Staff', icon: 'fa-chalkboard-teacher', value: 45, color: 'hos' },
+                    { title: 'Classes', icon: 'fa-school', value: 30, color: 'hos' },
+                    { title: 'Fee Collection', icon: 'fa-money-bill-wave', value: '₦4.2M', color: 'hos' }
                 ]
             },
             classteacher: {
@@ -630,13 +819,19 @@ $userId = $_SESSION['user_id'];
                 },
                 navigation: [
                     { name: 'Dashboard', icon: 'fa-tachometer-alt', active: true, href: 'dashboard.php' },
-                    { name: 'Fee Management', icon: 'fa-chart-line', active: false, href: 'fees_management.php' },
-                    { name: 'Students Management', icon: 'fa-user-graduate', active: false, href: 'student_management.php' },
-                    { name: 'Subject Management', icon: 'fa-book', active: false, href: 'subject_management.php' },
-                    { name: 'Results Management', icon: 'fa-chart-bar', active: false, href: 'results_management.php' },
-                    { name: 'Staff Management', icon: 'fa-chalkboard-teacher', active: false, href: 'staff_management.php' },
-                    { name: 'Class Management', icon: 'fa-school', active: false, href: 'class_management.php' },
+                    { name: 'My Class', icon: 'fa-users', active: false, href: 'my_class.php' },
+                    { name: 'Attendance', icon: 'fa-calendar-check', active: false, href: 'attendance.php' },
+                    { name: 'Student Grades', icon: 'fa-graduation-cap', active: false, href: 'student_grades.php' },
+                    { name: 'Behavior Reports', icon: 'fa-chart-bar', active: false, href: 'behavior_reports.php' },
+                    { name: 'Parent Meetings', icon: 'fa-handshake', active: false, href: 'parent_meetings.php' },
+                    { name: 'Class Schedule', icon: 'fa-calendar-alt', active: false, href: 'class_schedule.php' },
                     { name: 'Settings', icon: 'fa-cog', active: false, href: 'settings.php' }
+                ],
+                cards: [
+                    { title: 'Class Students', icon: 'fa-user-graduate', value: 42, color: 'classteacher' },
+                    { title: 'Attendance Today', icon: 'fa-calendar-check', value: '95%', color: 'classteacher' },
+                    { title: 'Pending Assignments', icon: 'fa-tasks', value: 8, color: 'classteacher' },
+                    { title: 'Parent Meetings', icon: 'fa-handshake', value: 3, color: 'classteacher' }
                 ]
             },
             subjectteacher: {
@@ -655,24 +850,54 @@ $userId = $_SESSION['user_id'];
                 },
                 navigation: [
                     { name: 'Dashboard', icon: 'fa-tachometer-alt', active: true, href: 'dashboard.php' },
-                    { name: 'Students', icon: 'fa-user-graduate', active: false, href: 'student_management.php' },
+                    { name: 'My Subjects', icon: 'fa-book', active: false, href: 'my_subjects.php' },
                     { name: 'Assignments', icon: 'fa-tasks', active: false, href: 'assignments.php' },
-                    { name: 'Results', icon: 'fa-chart-bar', active: false, href: 'results_management.php' },
+                    { name: 'Gradebook', icon: 'fa-chart-bar', active: false, href: 'gradebook.php' },
+                    { name: 'Lesson Plans', icon: 'fa-clipboard-list', active: false, href: 'lesson_plans.php' },
                     { name: 'Timetable', icon: 'fa-calendar-alt', active: false, href: 'timetable.php' },
+                    { name: 'Resources', icon: 'fa-folder-open', active: false, href: 'resources.php' },
                     { name: 'Settings', icon: 'fa-cog', active: false, href: 'settings.php' }
+                ],
+                cards: [
+                    { title: 'Total Students', icon: 'fa-user-graduate', value: 185, color: 'subjectteacher' },
+                    { title: 'Subjects', icon: 'fa-book', value: 2, color: 'subjectteacher' },
+                    { title: 'Pending Grading', icon: 'fa-file-alt', value: 24, color: 'subjectteacher' },
+                    { title: 'Lessons This Week', icon: 'fa-calendar-alt', value: 12, color: 'subjectteacher' }
                 ]
             }
         };
 
-        // Recent activities data
-        const recentActivities = [
-            { user: 'Super Admin', action: 'Added new student', details: 'James Adekunle - Grade 10A', time: '10 min ago', icon: 'admin' },
-            { user: 'Head of School', action: 'Updated staff assignment', details: 'Mrs. Okoro to Grade 10A', time: '25 min ago', icon: 'hos' },
-            { user: 'System', action: 'Fee payment processed', details: '₦50,000 from Chioma Okeke', time: '1 hour ago', icon: 'system' },
-            { user: 'Class Teacher', action: 'Marked attendance', details: 'Grade 10A - 42/42 present', time: '2 hours ago', icon: 'teacher' },
-            { user: 'Subject Teacher', action: 'Uploaded assignment', details: 'Math - Chapter 5', time: '3 hours ago', icon: 'teacher' },
-            { user: 'Super Admin', action: 'System backup completed', details: 'Daily backup successful', time: '4 hours ago', icon: 'admin' }
-        ];
+        // Recent activities data - Different for each role
+        const recentActivities = {
+            superadmin: [
+                { user: 'Super Admin', action: 'System configuration updated', details: 'Updated security settings', time: '10 min ago', icon: 'admin' },
+                { user: 'Head of School', action: 'Branch report submitted', details: 'Main Campus monthly report', time: '25 min ago', icon: 'hos' },
+                { user: 'System', action: 'Database backup completed', details: 'Daily backup successful', time: '1 hour ago', icon: 'system' },
+                { user: 'Class Teacher', action: 'Attendance marked', details: 'Grade 10A - 42/42 present', time: '2 hours ago', icon: 'teacher' },
+                { user: 'System', action: 'New user registered', details: 'Subject teacher - Mr. Adeyemi', time: '3 hours ago', icon: 'system' }
+            ],
+            hos: [
+                { user: 'Head of School', action: 'Staff meeting scheduled', details: 'Monthly staff meeting - Friday 2PM', time: '15 min ago', icon: 'hos' },
+                { user: 'Class Teacher', action: 'Report submitted', details: 'Grade 10A behavior report', time: '30 min ago', icon: 'teacher' },
+                { user: 'Finance', action: 'Fee payment processed', details: '₦50,000 from Chioma Okeke', time: '45 min ago', icon: 'system' },
+                { user: 'Parent', action: 'Meeting requested', details: 'Mr. Adekunle - Grade 10A parent', time: '1 hour ago', icon: 'system' },
+                { user: 'System', action: 'Attendance summary', details: '95% overall attendance today', time: '2 hours ago', icon: 'system' }
+            ],
+            classteacher: [
+                { user: 'You', action: 'Attendance marked', details: 'Grade 10A - 40/42 present', time: '15 min ago', icon: 'teacher' },
+                { user: 'Student', action: 'Assignment submitted', details: 'Mathematics - James Adekunle', time: '30 min ago', icon: 'system' },
+                { user: 'Parent', action: 'Meeting confirmed', details: 'Mrs. Okeke - Tomorrow 3PM', time: '1 hour ago', icon: 'system' },
+                { user: 'HOS', action: 'Notice', details: 'Staff meeting this Friday', time: '2 hours ago', icon: 'hos' },
+                { user: 'Student', action: 'Late arrival', details: 'Chioma Okeke - 8:30 AM', time: '3 hours ago', icon: 'system' }
+            ],
+            subjectteacher: [
+                { user: 'You', action: 'Assignment uploaded', details: 'Math - Chapter 5 Problems', time: '20 min ago', icon: 'teacher' },
+                { user: 'Student', action: 'Assignment submitted', details: 'Physics - James Adekunle', time: '45 min ago', icon: 'system' },
+                { user: 'Class Teacher', action: 'Grades requested', details: 'Grade 10A - Midterm grades', time: '1 hour ago', icon: 'teacher' },
+                { user: 'You', action: 'Lesson plan created', details: 'Math - Trigonometry', time: '2 hours ago', icon: 'teacher' },
+                { user: 'HOS', action: 'Notice', details: 'Subject coordination meeting', time: '3 hours ago', icon: 'hos' }
+            ]
+        };
 
         // Chart instance storage
         let populationChart = null;
@@ -690,15 +915,47 @@ $userId = $_SESSION['user_id'];
         // Load dashboard content
         function loadDashboard() {
             const role = roles[currentRole];
+            const activities = recentActivities[currentRole] || [];
             
             // Load dashboard content after a short delay
             setTimeout(() => {
                 const content = document.getElementById('dashboardContent');
                 content.innerHTML = `
                     <div class="row g-3">
-                        ${renderStatsCards(role)}
+                        ${renderRoleSpecificCards(role)}
                     </div>
                     
+                    ${renderRoleSpecificContent(role, activities)}
+                `;
+                
+                // Initialize charts
+                initializeCharts();
+            }, 300);
+        }
+
+        function renderRoleSpecificCards(role) {
+            let cardsHTML = '';
+            
+            role.cards.forEach(card => {
+                cardsHTML += `
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="dashboard-card ${card.color}">
+                            <div class="card-icon ${card.color}">
+                                <i class="fas ${card.icon}"></i>
+                            </div>
+                            <div class="stat-number ${card.color}">${card.value}</div>
+                            <div class="card-label">${card.title}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            return cardsHTML;
+        }
+
+        function renderRoleSpecificContent(role, activities) {
+            if (role.id === 'superadmin' || role.id === 'hos') {
+                return `
                     <div class="row mt-3">
                         <div class="col-xl-8 mb-3">
                             <div class="activity-feed">
@@ -723,7 +980,7 @@ $userId = $_SESSION['user_id'];
                                 </h5>
                                 <div class="chart-container" style="height: 180px;">
                                     <canvas id="genderChart"></canvas>
-                                </div>x
+                                </div>
                                 <div class="gender-stats mt-3 p-2">
                                     <div class="row text-center">
                                         <div class="col-6 border-end">
@@ -756,109 +1013,66 @@ $userId = $_SESSION['user_id'];
                                     </button>
                                 </div>
                                 
-                                ${renderCompactActivities(role)}
+                                ${renderCompactActivities(activities)}
                             </div>
-                        </div>
-                    </div>
-                `;
-                
-                // Initialize charts
-                initializeCharts();
-            }, 300);
-        }
-
-        function renderStatsCards(role) {
-            const stats = role.stats;
-            const badgeClass = role.badgeClass;
-            
-            // Card 1: Total Students
-            const card1 = `
-                <div class="col-xl-3 col-md-6 mb-3">
-                    <div class="dashboard-card ${badgeClass}">
-                        <div class="card-icon ${badgeClass}">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <div class="stat-number ${badgeClass}">${(stats.totalStudents || 0).toLocaleString()}</div>
-                        <div class="card-label">Total Students</div>
-                    </div>
-                </div>
-            `;
-            
-            // Card 2: Academic Staff
-            const card2 = `
-                <div class="col-xl-3 col-md-6 mb-3">
-                    <div class="dashboard-card ${badgeClass}">
-                        <div class="card-icon ${badgeClass}">
-                            <i class="fas fa-chalkboard-teacher"></i>
-                        </div>
-                        <div class="stat-number ${badgeClass}">${(stats.academicStaff || 0).toLocaleString()}</div>
-                        <div class="card-label">Academic Staff</div>
-                    </div>
-                </div>
-            `;
-            
-            // Card 3: Non-Academic Staff
-            const card3 = `
-                <div class="col-xl-3 col-md-6 mb-3">
-                    <div class="dashboard-card ${badgeClass}">
-                        <div class="card-icon ${badgeClass}">
-                            <i class="fas fa-user-tie"></i>
-                        </div>
-                        <div class="stat-number ${badgeClass}">${(stats.nonAcademicStaff || 0).toLocaleString()}</div>
-                        <div class="card-label">Non-Academic Staff</div>
-                    </div>
-                </div>
-            `;
-            
-            // Card 4: Subjects or Branches based on role
-            let card4 = '';
-            if (role.id === 'superadmin' || role.id === 'hos') {
-                card4 = `
-                    <div class="col-xl-3 col-md-6 mb-3">
-                        <div class="dashboard-card ${badgeClass}">
-                            <div class="card-icon ${badgeClass}">
-                                <i class="fas fa-school"></i>
-                            </div>
-                            <div class="stat-number ${badgeClass}">${(stats.branches || 0).toLocaleString()}</div>
-                            <div class="card-label">Branches</div>
                         </div>
                     </div>
                 `;
             } else {
-                card4 = `
-                    <div class="col-xl-3 col-md-6 mb-3">
-                        <div class="dashboard-card ${badgeClass}">
-                            <div class="card-icon ${badgeClass}">
-                                <i class="fas fa-book"></i>
+                // For teachers, show more teaching-focused content
+                return `
+                    <div class="row mt-3">
+                        <div class="col-xl-6 mb-3">
+                            <div class="activity-feed">
+                                <h5 class="fw-bold mb-3" style="font-size: 1rem;">
+                                    <i class="fas fa-chart-pie me-2"></i>Performance Overview
+                                </h5>
+                                <div class="chart-container" style="height: 200px;">
+                                    <canvas id="performanceChart"></canvas>
+                                </div>
                             </div>
-                            <div class="stat-number ${badgeClass}">${(stats.subjects || 0).toLocaleString()}</div>
-                            <div class="card-label">Subjects</div>
+                        </div>
+                        
+                        <div class="col-xl-6 mb-3">
+                            <div class="activity-feed">
+                                <h5 class="fw-bold mb-3" style="font-size: 1rem;">
+                                    <i class="fas fa-calendar-alt me-2"></i>Upcoming Schedule
+                                </h5>
+                                <div class="upcoming-schedule">
+                                    ${renderUpcomingSchedule(role)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="activity-feed">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="fw-bold mb-0" style="font-size: 1rem;">
+                                        <i class="fas fa-history me-2"></i>Recent Activities
+                                    </h5>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="toggleActivityView()">
+                                        <i class="fas fa-compress-alt"></i>
+                                    </button>
+                                </div>
+                                
+                                ${renderCompactActivities(activities)}
+                            </div>
                         </div>
                     </div>
                 `;
             }
-            
-            return card1 + card2 + card3 + card4;
         }
 
-        function renderCompactActivities(role) {
-            let filtered = recentActivities;
-            
-            if (role.id === 'hos') {
-                filtered = recentActivities.filter(a => a.icon === 'admin' || a.icon === 'hos' || a.icon === 'system');
-            } else if (role.id === 'classteacher') {
-                filtered = recentActivities.filter(a => a.icon === 'teacher' || a.icon === 'system');
-            } else if (role.id === 'subjectteacher') {
-                filtered = recentActivities.filter(a => a.icon === 'teacher' || a.icon === 'system');
-            }
-            
-            if (filtered.length === 0) {
+        function renderCompactActivities(activities) {
+            if (activities.length === 0) {
                 return `<div class="text-center py-3"><i class="fas fa-inbox text-muted"></i><p class="text-muted mt-2 mb-0 small">No activities</p></div>`;
             }
             
             return `
                 <div class="compact-activities">
-                    ${filtered.map(activity => `
+                    ${activities.map(activity => `
                         <div class="activity-item-compact">
                             <div class="activity-icon-compact ${activity.icon}">
                                 <i class="fas ${activity.icon === 'admin' ? 'fa-crown' : activity.icon === 'hos' ? 'fa-user-tie' : activity.icon === 'teacher' ? 'fa-chalkboard-teacher' : 'fa-cog'}"></i>
@@ -872,6 +1086,41 @@ $userId = $_SESSION['user_id'];
                     `).join('')}
                 </div>
             `;
+        }
+
+        function renderUpcomingSchedule(role) {
+            const schedules = {
+                classteacher: [
+                    { time: '8:00 AM', subject: 'Morning Assembly', class: 'All Students' },
+                    { time: '9:00 AM', subject: 'Mathematics', class: 'Grade 10A' },
+                    { time: '11:00 AM', subject: 'Parent Meeting', class: 'Mrs. Okeke' },
+                    { time: '2:00 PM', subject: 'Staff Meeting', class: 'Conference Room' }
+                ],
+                subjectteacher: [
+                    { time: '9:00 AM', subject: 'Mathematics', class: 'Grade 10A' },
+                    { time: '10:00 AM', subject: 'Physics', class: 'Grade 11B' },
+                    { time: '1:00 PM', subject: 'Mathematics', class: 'Grade 9C' },
+                    { time: '3:00 PM', subject: 'Subject Meeting', class: 'Math Department' }
+                ]
+            };
+            
+            const schedule = schedules[role.id] || [];
+            
+            if (schedule.length === 0) {
+                return '<div class="text-center py-3"><i class="fas fa-calendar-times text-muted"></i><p class="text-muted mt-2 mb-0 small">No upcoming schedule</p></div>';
+            }
+            
+            return schedule.map(item => `
+                <div class="d-flex align-items-center py-2 border-bottom">
+                    <div class="bg-light rounded p-2 me-3 text-center" style="width: 70px;">
+                        <div class="fw-bold">${item.time}</div>
+                    </div>
+                    <div>
+                        <div class="fw-bold">${item.subject}</div>
+                        <small class="text-muted">${item.class}</small>
+                    </div>
+                </div>
+            `).join('');
         }
 
         // Chart Functions
@@ -943,6 +1192,43 @@ $userId = $_SESSION['user_id'];
                     }
                 });
             }
+            
+            // Performance Chart for teachers
+            const perfCtx = document.getElementById('performanceChart');
+            if (perfCtx) {
+                new Chart(perfCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['A', 'B', 'C', 'D', 'F'],
+                        datasets: [{
+                            data: [15, 12, 8, 5, 2],
+                            backgroundColor: role.id === 'classteacher' ? '#4caf50' : '#9c27b0',
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                text: 'Grade Distribution'
+                            }
+                        },
+                        scales: {
+                            x: { 
+                                grid: { display: false },
+                                title: { display: true, text: 'Grades' }
+                            },
+                            y: { 
+                                beginAtZero: true,
+                                title: { display: true, text: 'Number of Students' }
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         function refreshCharts() {
@@ -999,7 +1285,6 @@ $userId = $_SESSION['user_id'];
 
         function switchRole(roleId) {
             // In a real app, this would make an AJAX call to update session
-            // For demo, we'll just reload with the new role
             window.location.href = `switch_role.php?role=${roleId}`;
         }
 
